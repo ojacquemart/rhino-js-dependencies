@@ -17,5 +17,14 @@ public class TestFunctionNodeVisitor {
         assertFalse(functions.isEmpty());
         assertEquals(JsFiles.SIMPLE.functionsNumber(), functions.size());
     }
+
+    @Test
+    public void testGetFunctionsFromPrototype() {
+        AstRoot root = GetAstRoot.getRoot(JsFiles.PROTOTYPE.fileName());
+        Set<String> functions = FunctionNodeVisitor.visitAndGetFunctions(root);
+
+        assertFalse(functions.isEmpty());
+        assertEquals(JsFiles.PROTOTYPE.functionsNumber(), functions.size());
+    }
 }
 

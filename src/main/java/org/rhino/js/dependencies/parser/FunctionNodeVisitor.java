@@ -1,9 +1,7 @@
 package org.rhino.js.dependencies.parser;
 
 import org.mozilla.javascript.Token;
-import org.mozilla.javascript.ast.AstNode;
-import org.mozilla.javascript.ast.FunctionNode;
-import org.mozilla.javascript.ast.NodeVisitor;
+import org.mozilla.javascript.ast.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,18 +29,46 @@ public class FunctionNodeVisitor implements NodeVisitor {
     public boolean visit(AstNode node) {
         LOGGER.debug("Node type: {}", Token.typeToName(node.getType()));
 
-        if (isFunction(node)) {
-            LOGGER.info("Found function");
-            FunctionNode functionNode = (FunctionNode) node;
-
-            functions.add(functionNode.getName());
+        switch (node.getType()) {
+            case Token.FUNCTION:
+                // Simple function.
+                FunctionNode functionNode = (FunctionNode) node;
+                addFunction(functionNode.getName());
+                break;
+            case Token.EXPR_RESULT:
+                // Expression result with prototype.
+                resolvePrototypeName((ExpressionStatement) node);
+                break;
+            default:
+                break;
         }
 
         return true;
     }
 
-    private boolean isFunction(AstNode node) {
-        return node.getType() == Token.FUNCTION;
+    private void resolvePrototypeName(ExpressionStatement expr) {
+        AstNode exprNode = expr.getExpression();
+        if (exprNode.getType() == Token.ASSIGN) {
+            Assignment asg = (Assignment) exprNode;
+            if (asg.getLeft().getType() == Token.GETPROP) {
+                PropertyGet propertyGet = (PropertyGet) asg.getLeft();
+                if (propertyGet.getRight().getType() == Token.NAME) {
+                    Name name = (Name) propertyGet.getRight();
+                    addFunction(name);
+                }
+            }
+        }
+    }
+
+    private void addFunction(Name name) {
+        addFunction(name.getString());
+    }
+
+    private void addFunction(String functionName) {
+        if (!functionName.isEmpty()) {
+            LOGGER.debug("Add function: {}", functionName);
+            functions.add(functionName);
+        }
     }
 
     public Set<String> getFunctions() {
