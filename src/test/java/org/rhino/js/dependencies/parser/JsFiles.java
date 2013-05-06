@@ -6,8 +6,9 @@ package org.rhino.js.dependencies.parser;
  */
 public enum JsFiles {
 
-    SIMPLE("functions.js", 3),
-    PROTOTYPE("prototype.js", 4)
+    SIMPLE("functions.js", 3, 0),
+    PROTOTYPE("prototype.js", 4, 0),
+    OBJECT("object.js", 6, 1)
     ;
 
     private static final String RESOURCES_DIR = "src/test/resources/";
@@ -22,9 +23,15 @@ public enum JsFiles {
      */
     private int nbFunctions;
 
-    JsFiles(String fileName, int nbFunctions) {
+    /**
+     * The number of function calls in the file.
+     */
+    private int nbFunctionCalls;
+
+    JsFiles(String fileName, int nbFunctions, int nbFunctionCalls) {
         this.fileName = RESOURCES_DIR + fileName;
         this.nbFunctions = nbFunctions;
+        this.nbFunctionCalls = nbFunctionCalls;
     }
 
     public String fileName(){
@@ -33,6 +40,10 @@ public enum JsFiles {
 
     public int functionsNumber() {
         return nbFunctions;
+    }
+
+    public int functionCallsNumber() {
+        return nbFunctionCalls;
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.List;
 public class Parser {
 
     private List<File> files;
-    private FunctionResolver functionResolver;
+    private JsFileInfoResolver functionResolver;
 
     public Parser(List<File> files) {
         this.files = files;
