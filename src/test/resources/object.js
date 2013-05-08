@@ -1,10 +1,4 @@
 function purl( url, strictMode ) {
-    if ( arguments.length === 1 && url === true ) {
-        strictMode = true;
-        url = undefined;
-    }
-    strictMode = strictMode || false;
-    url = url || window.location.toString();
 
     return {
 
@@ -47,3 +41,6 @@ function purl( url, strictMode ) {
     };
 
 };
+
+var f = purl();
+f.attr();

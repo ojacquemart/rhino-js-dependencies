@@ -1,14 +1,15 @@
-SimplePrototype = function() {};
+Proto = function() {};
+Proto.static = function() {};
+Proto.static1 = function() {};
+Proto.static2 = function() {};
 
-SimplePrototype.prototype.foo = function() {
+Proto.prototype.classic = function() {};
+Proto.prototype.classic1 = function() {};
+Proto.prototype.classic2 = function() {};
 
-};
-SimplePrototype.prototype.bar = function() {
+var p = new Proto();
+p.classic();
 
-};
-SimplePrototype.prototype.qix = function() {
+Proto.static();
 
-};
-SimplePrototype.prototype.test = function() {
 
-};

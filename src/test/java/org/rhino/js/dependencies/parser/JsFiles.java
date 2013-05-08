@@ -7,8 +7,8 @@ package org.rhino.js.dependencies.parser;
 public enum JsFiles {
 
     SIMPLE("functions.js", 3, 0),
-    PROTOTYPE("prototype.js", 4, 0),
-    OBJECT("object.js", 6, 1)
+    PROTOTYPE("prototype.js", 6, 2),
+    OBJECT("object.js", 6, 2)
     ;
 
     private static final String RESOURCES_DIR = "src/test/resources/";
