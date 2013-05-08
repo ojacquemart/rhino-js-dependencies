@@ -8,8 +8,8 @@ import java.util.TreeSet;
  */
 public class JsFileInfo {
 
-    private Set<String> functions;
-    private Set<String> functionCalls = new TreeSet<>();
+    private final Set<String> functions;
+    private final Set<String> functionCalls;
 
     public JsFileInfo(Set<String> functions, Set<String> functionCalls) {
         this.functions = functions;
