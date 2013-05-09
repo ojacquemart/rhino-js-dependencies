@@ -113,6 +113,7 @@ public class FunctionCallVisitor implements Clearable, NodeVisitor {
         }
     }
 
+    @Override
     public void clear() {
         functionCalls.clear();
     }

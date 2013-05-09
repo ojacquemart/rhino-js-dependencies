@@ -11,12 +11,13 @@ import java.util.TreeSet;
 /**
  * Abstract function visitor.
  */
-public abstract class FunctionVisitor implements NodeVisitor {
+public abstract class FunctionVisitor implements Clearable, NodeVisitor {
 
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private final Set<String> functions = new TreeSet<>();
 
+    @Override
     public void clear() {
         functions.clear();
     }
