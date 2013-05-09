@@ -8,7 +8,8 @@ public enum JsFiles {
 
     SIMPLE("functions.js", 3, 0),
     PROTOTYPE("prototype.js", 6, 2),
-    OBJECT("object.js", 6, 2)
+    OBJECT("object.js", 6, 2),
+    JQUERY_PLUGIN("jquery.plugin.js", 2, 0),
     ;
 
     private static final String RESOURCES_DIR = "src/test/resources/";

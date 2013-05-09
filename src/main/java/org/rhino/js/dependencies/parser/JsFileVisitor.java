@@ -18,6 +18,7 @@ public class JsFileVisitor implements NodeVisitor {
         FUNCTION_DECLARATION_VISITOR.add(new SimpleFunctionVisitor());
         FUNCTION_DECLARATION_VISITOR.add(new ProtoypeFunctionVisitor());
         FUNCTION_DECLARATION_VISITOR.add(new ObjectFunctionVisitor());
+        FUNCTION_DECLARATION_VISITOR.add(new JqueryFunctionVisitor());
     }
 
     private JsFileVisitor() {

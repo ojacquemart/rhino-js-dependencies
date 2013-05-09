@@ -107,9 +107,11 @@ public class FunctionCallVisitor implements Clearable, NodeVisitor {
             Name variableName = (Name) varInitializer.getTarget();
 
             FunctionCall initializer = (FunctionCall) varInitializer.getInitializer();
-            Name functionName = (Name) initializer.getTarget();
+            if (initializer.getTarget().getType() == Token.NAME) {
+                Name functionName = (Name) initializer.getTarget();
 
-            variableNamesByType.put(variableName.getString(), functionName.getString());
+                variableNamesByType.put(variableName.getString(), functionName.getString());
+            }
         }
     }
 

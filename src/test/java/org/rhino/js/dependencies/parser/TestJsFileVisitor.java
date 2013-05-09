@@ -35,5 +35,10 @@ public class TestJsFileVisitor {
     public void testGetFunctionsFromObject() {
         assertJsFile(JsFiles.OBJECT);
     }
+
+    @Test
+    public void testGetFunctionsFromJqueryPlugin() {
+        assertJsFile(JsFiles.JQUERY_PLUGIN);
+    }
 }
 

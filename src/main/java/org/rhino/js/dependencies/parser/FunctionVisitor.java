@@ -26,6 +26,10 @@ public abstract class FunctionVisitor implements Clearable, NodeVisitor {
         addFunction(name.getString());
     }
 
+    protected void addFunction(FunctionName funcName) {
+        addFunction(funcName.getString());
+    }
+
     protected void addFunction(String functionName) {
         if (!functionName.isEmpty()) {
             LOGGER.debug("Add function: {}", functionName);

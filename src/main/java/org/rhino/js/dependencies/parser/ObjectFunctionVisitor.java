@@ -12,21 +12,20 @@ public class ObjectFunctionVisitor extends FunctionVisitor {
 
     @Override
     public boolean visit(AstNode node) {
-        if (node.getType() != Token.OBJECTLIT) {
-            return false;
-        }
+        if (node.getType() == Token.OBJECTLIT) {
+            ObjectLiteral objectLiteral = (ObjectLiteral) node;
 
-        ObjectLiteral objectLiteral = (ObjectLiteral) node;
-
-        String objectName = getObjectName(objectLiteral);
-        List<ObjectProperty> elements = objectLiteral.getElements();
-        for (ObjectProperty eachProperty : elements) {
-            if (eachProperty.getLeft() instanceof Name) {
-                String functionName = eachProperty.getLeft().getString();
-                // FIXME: check if objectName is null.
-                addFunction(String.format("%s#%s", objectName, functionName));
+            String objectName = getObjectName(objectLiteral);
+            List<ObjectProperty> elements = objectLiteral.getElements();
+            for (ObjectProperty eachProperty : elements) {
+                if (eachProperty.getLeft() instanceof Name) {
+                    String functionName = eachProperty.getLeft().getString();
+                    // FIXME: check if objectName is null.
+                    addFunction(String.format("%s#%s", objectName, functionName));
+                }
             }
         }
+
 
         return true;
 
