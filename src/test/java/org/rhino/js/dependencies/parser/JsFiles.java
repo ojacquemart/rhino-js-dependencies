@@ -1,5 +1,7 @@
 package org.rhino.js.dependencies.parser;
 
+import org.rhino.js.dependencies.models.JsFile;
+
 /**
  * Enum of js files to test.
  * Use toString() method on element to get the fileName or #fileName()
@@ -37,6 +39,10 @@ public enum JsFiles {
 
     public String fileName(){
         return fileName;
+    }
+
+    public JsFile getJsFile() {
+        return new JsFile(fileName());
     }
 
     public int functionsNumber() {

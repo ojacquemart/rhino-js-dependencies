@@ -2,25 +2,22 @@ package org.rhino.js.dependencies.parser;
 
 import org.rhino.js.dependencies.models.JsFile;
 
-import java.io.File;
 import java.util.List;
 
 public class Parser {
 
-    private List<File> files;
-    private JsFileInfoResolver functionResolver;
+    private Parser() {}
 
-    public Parser(List<File> files) {
-        this.files = files;
+    public static void parseAll(List<JsFile> jsFiles) {
+        for (JsFile eachJsFile : jsFiles) {
+            parse(eachJsFile);
+        }
     }
 
-    public void parse() {
-
+    public static void parse(JsFile jsFile) {
+        jsFile.setFileInfo(JsFileInfoResolver
+                .forFile(jsFile.getFile())
+                .getJsFileInfo());
     }
-
-    public List<JsFile> getJsFiles() {
-        return null;
-    }
-
 
 }
