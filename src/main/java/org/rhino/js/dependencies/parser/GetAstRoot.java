@@ -21,6 +21,8 @@ public class GetAstRoot {
         env.setRecordingComments(true);
     }
 
+    private GetAstRoot() {}
+
     public static AstRoot getRoot(String fileName) {
         return getRoot(new File(fileName));
     }
