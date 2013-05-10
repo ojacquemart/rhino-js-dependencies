@@ -2,6 +2,7 @@ package org.rhino.js.dependencies.parser;
 
 import org.mozilla.javascript.Token;
 import org.mozilla.javascript.ast.*;
+import org.rhino.js.dependencies.models.FunctionName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,11 +14,11 @@ import java.util.TreeSet;
 /**
  * Function call visitor.
  */
-public class FunctionCallVisitor implements Clearable, NodeVisitor {
+public class FunctionCallVisitor implements ContainerFunction, NodeVisitor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FunctionCallVisitor.class);
 
-    private final Set<String> functionCalls = new TreeSet<>();
+    private final Set<FunctionName> functionCalls = new TreeSet<>();
     private final Map<String, String> variableNamesByType = new HashMap<>();
 
     @Override
@@ -34,7 +35,7 @@ public class FunctionCallVisitor implements Clearable, NodeVisitor {
         // Find functions call and try to get the defined type of function.
         AstNode target = ((FunctionCall) node).getTarget();
         if (target.getType() == Token.NAME) {
-            addFunctionCall((Name) target);
+            addElement((Name) target);
         }
         else if (target.getType() == Token.GETPROP) {
             tryToGetDefinedTypeByVariableName((PropertyGet) target);
@@ -52,7 +53,7 @@ public class FunctionCallVisitor implements Clearable, NodeVisitor {
             if (variableName != null) {
                 addFunctionCallByInstance(variableName, functionName);
             } else {
-                functionCalls.add(functionName);
+                addElement(functionName);
             }
         }
     }
@@ -60,9 +61,9 @@ public class FunctionCallVisitor implements Clearable, NodeVisitor {
     private void addFunctionCallByInstance(String variableName, String functionName) {
         String instanceType = variableNamesByType.get(variableName);
         if (instanceType != null) {
-            functionCalls.add(String.format("%s#%s", instanceType, functionName));
+            addElement(instanceType, functionName);
         }  else {
-            functionCalls.add(functionName);
+            addElement(functionName);
         }
     }
 
@@ -120,11 +121,24 @@ public class FunctionCallVisitor implements Clearable, NodeVisitor {
         functionCalls.clear();
     }
 
-    private void addFunctionCall(Name name) {
-        functionCalls.add(name.getString());
+    public void addElement(Name name) {
+        addElement(name.getString());
     }
 
-    public Set<String> getFunctionCalls() {
+    public void addElement(String name) {
+        addElement(new FunctionName(name));
+    }
+    public void addElement(String type, String name) {
+        addElement(new FunctionName(type, name));
+    }
+
+    @Override
+    public void addElement(FunctionName functionName) {
+        functionCalls.add(functionName);
+    }
+
+    @Override
+    public Set<FunctionName> getElements() {
         LOGGER.info("Found {} function calls", functionCalls.size());
         LOGGER.debug("Function calls found: {}", functionCalls);
 

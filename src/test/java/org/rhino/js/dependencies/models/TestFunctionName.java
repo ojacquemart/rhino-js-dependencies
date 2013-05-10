@@ -1,6 +1,7 @@
-package org.rhino.js.dependencies.parser;
+package org.rhino.js.dependencies.models;
 
 import org.junit.Test;
+import org.rhino.js.dependencies.models.FunctionName;
 
 import static org.junit.Assert.*;
 

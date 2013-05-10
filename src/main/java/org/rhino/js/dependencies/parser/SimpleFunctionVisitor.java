@@ -13,11 +13,9 @@ public class SimpleFunctionVisitor extends FunctionVisitor {
     public boolean visit(AstNode node) {
         if (node.getType() == Token.FUNCTION) {
             FunctionNode functionNode = (FunctionNode) node;
-            addFunction(functionNode.getName());
-
-            return true;
+            addElement(functionNode.getName());
         }
 
-        return false;
+        return true;
     }
 }

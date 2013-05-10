@@ -13,11 +13,11 @@ public class TestJsFileVisitor {
         AstRoot root = GetAstRoot.getRoot(jsFile.fileName());
         JsFileVisitor visitor = JsFileVisitor.newInstance(root);
 
-        Set<String> functions = visitor.getFunctions();
+        Set<?> functions = visitor.getFunctions();
         assertFalse(functions.isEmpty());
         assertEquals(jsFile.functionsNumber(), functions.size());
 
-        Set<String> functionCalls = visitor.getFunctionCalls();
+        Set<?> functionCalls = visitor.getFunctionCalls();
         assertEquals(jsFile.functionCallsNumber(), functionCalls.size());
     }
 

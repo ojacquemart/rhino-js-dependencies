@@ -2,6 +2,7 @@ package org.rhino.js.dependencies.parser;
 
 import org.mozilla.javascript.ast.Name;
 import org.mozilla.javascript.ast.NodeVisitor;
+import org.rhino.js.dependencies.models.FunctionName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,33 +12,35 @@ import java.util.TreeSet;
 /**
  * Abstract function visitor.
  */
-public abstract class FunctionVisitor implements Clearable, NodeVisitor {
+public abstract class FunctionVisitor implements ContainerFunction, NodeVisitor {
 
     protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
-    private final Set<String> functions = new TreeSet<>();
+    private final Set<FunctionName> functions = new TreeSet<>();
 
     @Override
     public void clear() {
         functions.clear();
     }
 
-    protected void addFunction(Name name) {
-        addFunction(name.getString());
+    public void addElement(Name name) {
+        addElement(name.getString());
     }
 
-    protected void addFunction(FunctionName funcName) {
-        addFunction(funcName.getString());
-    }
-
-    protected void addFunction(String functionName) {
+    public void addElement(String functionName) {
         if (!functionName.isEmpty()) {
             LOGGER.debug("Add function: {}", functionName);
-            functions.add(functionName);
+            addElement(new FunctionName(functionName));
         }
     }
 
-    public Set<String> getFunctions() {
+    @Override
+    public void addElement(FunctionName funcName) {
+        functions.add(funcName);
+    }
+
+    @Override
+    public Set<FunctionName> getElements() {
         LOGGER.info("Found {} function(s)", functions.size());
         LOGGER.debug("Functions found: {}", functions);
 

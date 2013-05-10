@@ -1,9 +1,9 @@
 package org.rhino.js.dependencies.parser;
 
-import org.mozilla.javascript.Token;
 import org.mozilla.javascript.ast.AstNode;
 import org.mozilla.javascript.ast.Name;
 import org.mozilla.javascript.ast.PropertyGet;
+import org.rhino.js.dependencies.models.FunctionName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +25,7 @@ public class JqueryFunctionVisitor extends FunctionVisitor {
                 LOGGER.debug("Found jquery tokens $ and fn: {}", jqueryTokenFound);
 
                 FunctionName funcName = new FunctionName("$", ((PropertyGet) node).getRight().getString());
-                addFunction(funcName);
+                addElement(funcName);
             }
         }
 

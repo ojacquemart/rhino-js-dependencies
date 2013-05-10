@@ -21,11 +21,10 @@ public class ObjectFunctionVisitor extends FunctionVisitor {
                 if (eachProperty.getLeft() instanceof Name) {
                     String functionName = eachProperty.getLeft().getString();
                     // FIXME: check if objectName is null.
-                    addFunction(String.format("%s#%s", objectName, functionName));
+                    addElement(String.format("%s#%s", objectName, functionName));
                 }
             }
         }
-
 
         return true;
 

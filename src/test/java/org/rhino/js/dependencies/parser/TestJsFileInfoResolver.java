@@ -29,7 +29,7 @@ public class TestJsFileInfoResolver {
     public void testGetFunctions() throws IOException {
         JsFileInfo jsFileInfo = getJsFileInfo(JsFiles.SIMPLE.fileName());
 
-        Set<String> functions = jsFileInfo.getFunctions();
+        Set<?> functions = jsFileInfo.getFunctions();
         assertNotNull(functions);
         assertFalse(functions.isEmpty());
     }

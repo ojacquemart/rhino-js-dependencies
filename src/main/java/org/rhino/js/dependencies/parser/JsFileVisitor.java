@@ -2,6 +2,7 @@ package org.rhino.js.dependencies.parser;
 
 import org.mozilla.javascript.Token;
 import org.mozilla.javascript.ast.*;
+import org.rhino.js.dependencies.models.FunctionName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,11 +63,11 @@ public class JsFileVisitor implements NodeVisitor {
         node.visit(FUNCTION_CALL_VISITOR);
     }
 
-    public Set<String> getFunctions() {
-        Set<String> functions = new TreeSet<>();
+    public Set<FunctionName> getFunctions() {
+        Set<FunctionName> functions = new TreeSet<>();
 
         for (FunctionVisitor eachVisitor : FUNCTION_DECLARATION_VISITOR) {
-            functions.addAll(eachVisitor.getFunctions());
+            functions.addAll(eachVisitor.getElements());
         }
 
         LOGGER.debug("Found overall {} functions", functions.size());
@@ -74,8 +75,8 @@ public class JsFileVisitor implements NodeVisitor {
         return functions;
     }
 
-    public Set<String> getFunctionCalls() {
-        return FUNCTION_CALL_VISITOR.getFunctionCalls();
+    public Set<FunctionName> getFunctionCalls() {
+        return FUNCTION_CALL_VISITOR.getElements();
     }
 
 }
