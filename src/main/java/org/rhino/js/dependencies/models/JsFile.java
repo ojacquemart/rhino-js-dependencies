@@ -53,6 +53,14 @@ public class JsFile implements Comparable<JsFile> {
         this.fileInfo = fileInfo;
     }
 
+    public Set<FunctionName> getFunctions() {
+        return fileInfo.getFunctions();
+    }
+
+    public Set<FunctionName> getFunctionCalls() {
+        return fileInfo.getFunctionCalls();
+    }
+
     public Set<JsFile> getUsages() {
         return usages;
     }

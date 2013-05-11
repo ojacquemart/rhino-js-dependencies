@@ -1,0 +1,31 @@
+=====================================
+= Javascript Rhino Js Dependencies  =
+=           Text Report             =
+=====================================
+
+Directory:              {{rootJsDir}}
+Date:                   {{date}}
+Files analysed:         {{nbFiles}}
+
+{{#jsFiles}}
+{{file}}
+-------------
+
+Methods list:
+~~~~~~~~~~~~
+{{#functions}}
+* {{string}}
+{{/functions}}
+
+Methods used from another files:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+{{#functionCalls}}
+* {{string}}
+{{/functionCalls}}
+
+Usages in another files:
+~~~~~~~~~~~~~~~~~~~~~~~
+{{#usages}}
+* {{file}}
+{{/usages}}
+{{/jsFiles}}
