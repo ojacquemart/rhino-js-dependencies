@@ -18,7 +18,7 @@ public class FunctionCallVisitor implements ContainerFunction, NodeVisitor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FunctionCallVisitor.class);
 
-    private final Set<FunctionName> functionCalls = new TreeSet<>();
+    private Set<FunctionName> functionCalls = new TreeSet<>();
     private final Map<String, String> variableNamesByType = new HashMap<>();
 
     @Override
@@ -118,7 +118,7 @@ public class FunctionCallVisitor implements ContainerFunction, NodeVisitor {
 
     @Override
     public void clear() {
-        functionCalls.clear();
+        functionCalls = new TreeSet<>();
     }
 
     public void addElement(Name name) {
