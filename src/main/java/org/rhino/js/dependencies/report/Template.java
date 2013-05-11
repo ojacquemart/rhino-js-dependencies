@@ -21,11 +21,8 @@ public enum Template {
         return name;
     }
 
-    public String getNameByExtension() {
-        File file = new File(name);
-
-        return file.getName().replace("mustache", extension);
+    public String getReportName() {
+        return "report." + extension;
     }
-
 
 }

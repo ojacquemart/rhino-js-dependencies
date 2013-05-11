@@ -28,6 +28,7 @@ public class Report {
      * Output directory to store the report.
      */
     private String outputDir;
+
     /**
      * The javascript root directory analysed.
      */
@@ -88,6 +89,7 @@ public class Report {
     /**
      * Generate the report.
      * TODO: try to precompile the templates.
+     * TODO: measure generation time.
      */
     public void generate() {
         try {
@@ -119,7 +121,9 @@ public class Report {
     }
 
     public String getName() {
-        return String.format("%s_%s", DateTime.now().toString(DATE_PATTERN_YYMMDD_HHMM), template.getNameByExtension());
+        return String.format("%s_%s",
+                DateTime.now().toString(DATE_PATTERN_YYMMDD_HHMM),
+                template.getReportName());
     }
 
 }

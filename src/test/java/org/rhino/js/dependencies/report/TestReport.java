@@ -8,7 +8,7 @@ import org.rhino.js.dependencies.models.FunctionName;
 import org.rhino.js.dependencies.models.JsFile;
 import org.rhino.js.dependencies.models.JsFileInfo;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -24,7 +24,7 @@ public class TestReport {
         jsFile.getUsages().add(new JsFile("aa"));
         jsFile.getUsages().add(new JsFile("b"));
         jsFile.getUsages().add(new JsFile("c"));
-        ArrayList<JsFile> jsFiles = Lists.newArrayList(jsFile);
+        List<JsFile> jsFiles = Lists.newArrayList(jsFile);
 
         Report report = new Report();
         report.setRootJsDir("d:/");
@@ -33,10 +33,17 @@ public class TestReport {
     }
 
     @Test
+    public void testGetFile() {
+         // TODO: implement test
+    }
+
+    @Test
     public void testGetName() {
         // Report file name should be yyyymmdd_templatename.extension
         Report report = new Report();
-        assertEquals(DateTime.now().toString(Report.DATE_PATTERN_YYMMDD_HHMM) + "_" + Template.TEXT.getNameByExtension(), report.getName());
+        assertEquals(DateTime.now().toString(Report.DATE_PATTERN_YYMMDD_HHMM)
+                        + "_"
+                        + Template.TEXT.getReportName(), report.getName());
     }
 
 }

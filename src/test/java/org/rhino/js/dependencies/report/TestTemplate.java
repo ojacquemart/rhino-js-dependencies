@@ -9,16 +9,16 @@ import static org.junit.Assert.*;
 public class TestTemplate {
 
     @Test
-    public void testAllTemplatesExist() {
+    public void testIfAllTemplatesExist() {
         for (Template eachTemplate : Template.values()) {
             assertTrue(eachTemplate.getName() + " doesn't exist", new File(eachTemplate.getName()).exists());
         }
     }
 
     @Test
-    public void testGetNameByExtension() {
-        Template template = Template.TEXT;
-        assertEquals("report.text.txt", template.getNameByExtension());
+    public void testGetReportName() {
+        assertEquals("report.txt", Template.TEXT.getReportName());
+        assertEquals("report.html", Template.HTML.getReportName());
     }
 
 
