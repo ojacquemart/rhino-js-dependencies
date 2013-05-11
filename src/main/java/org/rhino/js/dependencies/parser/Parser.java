@@ -12,6 +12,7 @@ public class Parser {
         for (JsFile eachJsFile : jsFiles) {
             parse(eachJsFile);
         }
+        UsageResolver.resolveUsagesBetween(jsFiles);
     }
 
     public static void parse(JsFile jsFile) {

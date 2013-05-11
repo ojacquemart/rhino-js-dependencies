@@ -14,7 +14,7 @@ public class TestAstGet {
 
     @Test
     public void testReadFromFileName() {
-        AstRoot root = GetAstRoot.getRoot(JsFiles.SIMPLE.fileName());
+        AstRoot root = GetAstRoot.getRoot(JsFiles.SIMPLE.getFileName());
         assertNotNull(root);
     }
 }

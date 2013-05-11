@@ -4,7 +4,7 @@ import org.rhino.js.dependencies.models.JsFile;
 
 /**
  * Enum of js files to test.
- * Use toString() method on element to get the fileName or #fileName()
+ * Use toString() method on element to get the getFileName or #getFileName()
  */
 public enum JsFiles {
 
@@ -37,19 +37,19 @@ public enum JsFiles {
         this.nbFunctionCalls = nbFunctionCalls;
     }
 
-    public String fileName(){
+    public String getFileName(){
         return fileName;
     }
 
-    public JsFile getJsFile() {
-        return new JsFile(fileName());
+    public JsFile toJsFile() {
+        return new JsFile(getFileName());
     }
 
-    public int functionsNumber() {
+    public int getFunctionsNumber() {
         return nbFunctions;
     }
 
-    public int functionCallsNumber() {
+    public int getFunctionCallsNumber() {
         return nbFunctionCalls;
     }
 
@@ -57,6 +57,5 @@ public enum JsFiles {
     public String toString() {
         return fileName;
     }
-
 
 }

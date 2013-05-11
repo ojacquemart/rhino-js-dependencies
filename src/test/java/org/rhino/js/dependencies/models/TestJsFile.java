@@ -49,8 +49,8 @@ public class TestJsFile {
     }
 
     private static JsFileInfo getJsFileInfo() {
-        Set<FunctionName> functions = Sets.newTreeSet(Lists.newArrayList(FunctionName.getInstance("$#bind")));
-        Set<FunctionName> functions1 = Sets.newTreeSet(Lists.newArrayList(FunctionName.getInstance("$#click")));
+        Set<FunctionName> functions = Sets.newTreeSet(Lists.newArrayList(FunctionName.newInstance("$#bind")));
+        Set<FunctionName> functions1 = Sets.newTreeSet(Lists.newArrayList(FunctionName.newInstance("$#click")));
 
         return new JsFileInfo(functions, functions1);
     }
@@ -59,23 +59,23 @@ public class TestJsFile {
     public void testUsages() {
         JsFile jsFile = getJsFile();
         assertFalse(jsFile.usesFunction(null));
-        assertTrue(jsFile.usesFunction(FunctionName.getInstance("$#click")));
-        assertFalse(jsFile.usesFunction(FunctionName.getInstance("$#bind")));
+        assertTrue(jsFile.usesFunction(FunctionName.newInstance("$#click")));
+        assertFalse(jsFile.usesFunction(FunctionName.newInstance("$#bind")));
     }
 
     @Test
     public void testHas() {
         JsFile jsFile = getJsFile();
         assertFalse(jsFile.hasFunction(null));
-        assertTrue(jsFile.hasFunction(FunctionName.getInstance("$#bind")));
-        assertFalse(jsFile.hasFunction(FunctionName.getInstance("$#click")));
+        assertTrue(jsFile.hasFunction(FunctionName.newInstance("$#bind")));
+        assertFalse(jsFile.hasFunction(FunctionName.newInstance("$#click")));
     }
 
     @Test
     public void testNullSafe() {
         JsFile jsFileNulls = getJsFileNulls();
         // Code should not throw NPE.
-        FunctionName mix = FunctionName.getInstance("mix");
+        FunctionName mix = FunctionName.newInstance("mix");
         jsFileNulls.hasFunction(mix);
         jsFileNulls.usesFunction(mix);
     }

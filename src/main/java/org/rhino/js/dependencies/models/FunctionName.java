@@ -27,8 +27,12 @@ public class FunctionName implements Comparable<FunctionName> {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(value));
     }
 
-    public static FunctionName getInstance(String name) {
+    public static FunctionName newInstance(String name) {
         return new FunctionName(name);
+    }
+
+    public static FunctionName newInstance(String type, String name) {
+        return new FunctionName(type, name);
     }
 
     public String getString() {

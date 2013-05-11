@@ -10,15 +10,15 @@ import static org.junit.Assert.*;
 public class TestJsFileVisitor {
 
     private void assertJsFile(JsFiles jsFile) {
-        AstRoot root = GetAstRoot.getRoot(jsFile.fileName());
+        AstRoot root = GetAstRoot.getRoot(jsFile.getFileName());
         JsFileVisitor visitor = JsFileVisitor.newInstance(root);
 
         Set<?> functions = visitor.getFunctions();
         assertFalse(functions.isEmpty());
-        assertEquals(jsFile.functionsNumber(), functions.size());
+        assertEquals(jsFile.getFunctionsNumber(), functions.size());
 
         Set<?> functionCalls = visitor.getFunctionCalls();
-        assertEquals(jsFile.functionCallsNumber(), functionCalls.size());
+        assertEquals(jsFile.getFunctionCallsNumber(), functionCalls.size());
     }
 
     @Test

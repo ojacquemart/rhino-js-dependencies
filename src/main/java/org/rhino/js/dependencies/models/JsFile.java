@@ -3,8 +3,8 @@ package org.rhino.js.dependencies.models;
 import com.google.common.base.Preconditions;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * JsFile.
@@ -13,7 +13,7 @@ public class JsFile implements Comparable<JsFile> {
 
     private File file;
     private JsFileInfo fileInfo = JsFileInfo.emptyFileInfo();
-    private Set<JsFile> usages = Collections.emptySet();
+    private Set<JsFile> usages = new TreeSet<>();
 
     public JsFile(File file) {
         this.file = file;
@@ -83,10 +83,7 @@ public class JsFile implements Comparable<JsFile> {
 
     @Override
     public String toString() {
-        return "JsFile{" +
-                "file='" + file + '\'' +
-                ", fileInfo=" + fileInfo +
-                '}';
+        return "JsFile(" +  file + ")";
     }
 
 }
