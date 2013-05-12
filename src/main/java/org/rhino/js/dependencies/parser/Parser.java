@@ -8,11 +8,13 @@ public class Parser {
 
     private Parser() {}
 
-    public static void parseAll(List<JsFile> jsFiles) {
+    public static List<JsFile> parseAll(List<JsFile> jsFiles) {
         for (JsFile eachJsFile : jsFiles) {
             parse(eachJsFile);
         }
         UsageResolver.resolveUsagesBetween(jsFiles);
+
+        return jsFiles;
     }
 
     public static void parse(JsFile jsFile) {
