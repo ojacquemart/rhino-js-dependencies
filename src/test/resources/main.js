@@ -1,13 +1,15 @@
 // References other scripts.
-a();
-b();
+function domReady() {
+    a();
+    b();
 
-var f = purl();
-f.attr();
+    var f = purl();
+    f.attr();
 
-$("#div").autoSuggest({});
+    $("#div").autoSuggest({});
 
-var p = new Proto();
-p.classic();
+    var p = new Proto();
+    p.classic();
+}
 
 

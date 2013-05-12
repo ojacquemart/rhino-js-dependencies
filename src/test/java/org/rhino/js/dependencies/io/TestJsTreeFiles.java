@@ -14,7 +14,7 @@ public class TestJsTreeFiles {
     public void testWalkTree() {
         String dir = "src/test";
         List<File> files = JsTreeFiles.getFiles(dir);
-        assertEquals(4, files.size());
+        assertEquals(5, files.size());
 
         List<JsFile> jsFiles = JsTreeFiles.getJsFiles(dir);
         assertEquals(files.size(), jsFiles.size());
