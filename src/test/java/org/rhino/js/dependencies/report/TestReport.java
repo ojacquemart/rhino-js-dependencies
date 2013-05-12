@@ -14,6 +14,21 @@ import static org.junit.Assert.*;
 
 public class TestReport {
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetRootJsDirNull() {
+        new Report().setRootJsDir(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetJsFilesNull() {
+        new Report().setJsFiles(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetTemplateNull() {
+        new Report().setTemplate(null);
+    }
+
     @Test
     public void testGenerate() {
         JsFile jsFile = new JsFile("foo");
@@ -33,8 +48,15 @@ public class TestReport {
     }
 
     @Test
-    public void testGetFile() {
-         // TODO: implement test
+    public void testGetBaseDirInRootJsDir() {
+        String baseDir = new Report().setRootJsDir("/jsdir").getBaseDir();
+        assertEquals("/jsdir", baseDir);
+    }
+
+    @Test
+    public void testGetBaseDirInOutputDir() {
+        String baseDir = new Report().setOutputDir("/outputdir").setRootJsDir("/jsdir").getBaseDir();
+        assertEquals("/outputdir", baseDir);
     }
 
     @Test

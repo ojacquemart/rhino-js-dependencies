@@ -3,6 +3,8 @@ package org.rhino.js.dependencies.report;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Stopwatch;
 import org.joda.time.DateTime;
 import org.rhino.js.dependencies.models.JsFile;
 import org.slf4j.Logger;
@@ -12,15 +14,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Report javascript analysis for a given directory with a template using mustache.java.
  *
- * Note: the variables used in mustache.java templates must have a getter withtout the prefix "get".
+ * Note: the base variables used in mustache.java templates must have a getter without the "get" prefix.
  */
 public class Report {
 
-    public static final String DATE_PATTERN_YYMMDD_HHMM = "YMMdd HHmm";
+    public static final String DATE_PATTERN_YYMMDD_HHMM = "YMMdd_HHmm";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Report.class);
 
@@ -49,20 +52,27 @@ public class Report {
      */
     private List<JsFile> jsFiles;
 
-    public void setOutputDir(String outputDir) {
+    public Report setOutputDir(String outputDir) {
         this.outputDir = outputDir;
+        return this;
     }
 
-    public void setRootJsDir(String rootJsDir) {
+    public Report setRootJsDir(String rootJsDir) {
+        Preconditions.checkArgument(rootJsDir != null);
         this.rootJsDir = rootJsDir;
+        return this;
     }
 
-    public void setTemplate(Template template) {
+    public Report setTemplate(Template template) {
+        Preconditions.checkArgument(template != null);
         this.template = template;
+        return this;
     }
 
-    public void setJsFiles(List<JsFile> jsFiles) {
+    public Report setJsFiles(List<JsFile> jsFiles) {
+        Preconditions.checkArgument(jsFiles != null);
         this.jsFiles = jsFiles;
+        return this;
     }
 
     // Mustache getters without prefixes.
@@ -89,10 +99,12 @@ public class Report {
     /**
      * Generate the report.
      * TODO: try to precompile the templates.
-     * TODO: measure generation time.
      */
     public void generate() {
         try {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.start();
+
             File outputFile = getFile();
 
             LOGGER.info("Generating report");
@@ -105,19 +117,24 @@ public class Report {
             if (flushOut) {
                 mustache.execute(new PrintWriter(System.out), this).flush();
             }
+
+            stopwatch.stop();
+            LOGGER.info("Report generated in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
         } catch (IOException e) {
             throw new IllegalStateException("Error during generating report", e);
         }
     }
 
     public File getFile() {
-        if (outputDir == null) {
-            File file = new File(rootJsDir + File.separator + getName());
+        return new File(getBaseDir() + File.separator + getName());
+    }
 
-            return file;
+    public String getBaseDir() {
+        if (outputDir == null) {
+            return rootJsDir;
         }
 
-        return new File(outputDir + File.separator + getName());
+        return outputDir;
     }
 
     public String getName() {
