@@ -17,6 +17,8 @@
         <mustache.java.version>0.8.12</mustache.java.version>
         <sl4j.version>1.7.5</sl4j.version>
         <junit.version>4.8.1</junit.version>
+
+        <exec-maven-plugin.version>1.2.1</exec-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -77,6 +79,25 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <!-- http://mojo.codehaus.org/exec-maven-plugin/usage.html -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${exec-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>org.rhino.js.dependencies.Main</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
 </project>
