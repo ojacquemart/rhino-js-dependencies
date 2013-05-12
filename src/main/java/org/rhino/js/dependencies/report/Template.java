@@ -1,7 +1,5 @@
 package org.rhino.js.dependencies.report;
 
-import java.io.File;
-
 public enum Template {
 
     TEXT("report.text.mustache", "txt"),
