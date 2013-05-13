@@ -1,5 +1,6 @@
 package org.rhino.js.dependencies.parser;
 
+import com.google.common.base.Strings;
 import org.mozilla.javascript.Token;
 import org.mozilla.javascript.ast.*;
 import org.rhino.js.dependencies.models.FunctionName;
@@ -31,7 +32,9 @@ public class ProtoypeFunctionVisitor extends FunctionVisitor {
                 String prototypeName = getPrototypeName(propertyGet.getLeft());
                 String functionName =propertyGet.getRight().getString();
 
-                addElement(formatIfPrototyName(prototypeName, functionName));
+                if (!Strings.isNullOrEmpty(prototypeName) && !Strings.isNullOrEmpty(functionName)) {
+                    addElement(getFunctionName(prototypeName, functionName));
+                }
             }
             return true;
         }
@@ -63,7 +66,7 @@ public class ProtoypeFunctionVisitor extends FunctionVisitor {
             return "prototype".equals(name.getString());
         }
 
-        private String formatIfPrototyName(String prototypeName, String functionName) {
+        private String getFunctionName(String prototypeName, String functionName) {
            return new FunctionName(prototypeName, functionName).getString();
         }
 

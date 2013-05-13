@@ -35,11 +35,13 @@ public class ObjectFunctionVisitor extends FunctionVisitor {
 
         if (objectLiteral.getParent().getType() == Token.RETURN) {
             ReturnStatement returnStmt = (ReturnStatement) objectLiteral.getParent();
-            if (returnStmt.getParent().getType() == Token.BLOCK) {
+            if (returnStmt.getParent() instanceof Block) {
                 Block block = (Block) returnStmt.getParent();
                 if (block.getParent() instanceof FunctionNode) {
                     FunctionNode funcNode = (FunctionNode) block.getParent();
-                    return funcNode.getFunctionName().getString();
+                    if (funcNode != null && funcNode.getFunctionName() != null) {
+                        return funcNode.getFunctionName().getString();
+                    }
                 }
             }
         }
