@@ -3,6 +3,8 @@ package org.rhino.js.dependencies.report;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static org.junit.Assert.*;
 
@@ -11,7 +13,7 @@ public class TestTemplate {
     @Test
     public void testIfAllTemplatesExist() {
         for (Template eachTemplate : Template.values()) {
-            assertTrue(eachTemplate.getName() + " doesn't exist", new File(eachTemplate.getName()).exists());
+            assertTrue(eachTemplate.getName() + " doesn't exist", Files.exists(Paths.get(eachTemplate.getName())));
         }
     }
 
