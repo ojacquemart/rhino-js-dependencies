@@ -32,8 +32,9 @@ public class TestReport {
         List<JsFile> jsFiles = Parser.parseAll(JsTreeFiles.getJsFiles("src/test"));
 
         Report report = new Report();
-        report.setRootJsDir("d:/");
+        report.setRootJsDir("src/test");
         report.setJsFiles(jsFiles);
+        report.setJustForTest(true);
         report.generate();
     }
 

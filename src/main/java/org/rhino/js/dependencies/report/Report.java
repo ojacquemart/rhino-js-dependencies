@@ -45,7 +45,7 @@ public class Report {
     /**
      * By default, flush in sysout is enabled.
      */
-    private boolean flushOut = true;
+    private boolean justSysout = true;
 
     /**
      * List of javascript files analysed.
@@ -73,6 +73,10 @@ public class Report {
         Preconditions.checkArgument(jsFiles != null);
         this.jsFiles = jsFiles;
         return this;
+    }
+
+    public void setJustForTest(boolean justSysout) {
+        this.justSysout = justSysout;
     }
 
     // Mustache getters without prefixes.
@@ -105,17 +109,18 @@ public class Report {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.start();
 
-            File outputFile = getFile();
-
             LOGGER.info("Generating report");
             LOGGER.info("\ttemplate used: {}", template.getName());
-            LOGGER.info("\toutput directory: {}", outputFile.getAbsolutePath());
 
             MustacheFactory mf = new DefaultMustacheFactory();
             Mustache mustache = mf.compile(template.getName());
-            mustache.execute(new PrintWriter(outputFile), this).flush();
-            if (flushOut) {
+            if (justSysout) {
                 mustache.execute(new PrintWriter(System.out), this).flush();
+            } else {
+                File outputFile = getFile();
+                LOGGER.info("\toutput directory: {}", outputFile.getAbsolutePath());
+
+                mustache.execute(new PrintWriter(outputFile), this).flush();
             }
 
             stopwatch.stop();
