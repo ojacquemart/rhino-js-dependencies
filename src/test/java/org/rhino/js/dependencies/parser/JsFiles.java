@@ -8,7 +8,7 @@ import org.rhino.js.dependencies.models.JsFile;
  */
 public enum JsFiles {
 
-    SIMPLE("functions.js", 3, 0),
+    SIMPLE("functions.js", 5, 0),
     PROTOTYPE("prototype.js", 6, 2),
     OBJECT("object.js", 6, 2),
     JQUERY_PLUGIN("jquery.plugin.js", 2, 0),
