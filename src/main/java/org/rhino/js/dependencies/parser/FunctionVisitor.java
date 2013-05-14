@@ -1,6 +1,6 @@
 package org.rhino.js.dependencies.parser;
 
-import org.mozilla.javascript.ast.Name;
+import org.mozilla.javascript.ast.AstNode;
 import org.mozilla.javascript.ast.NodeVisitor;
 import org.rhino.js.dependencies.models.FunctionName;
 import org.slf4j.Logger;
@@ -14,16 +14,20 @@ import java.util.TreeSet;
  */
 public abstract class FunctionVisitor implements ContainerFunction, NodeVisitor {
 
-    protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private final Set<FunctionName> functions = new TreeSet<>();
+
+    public Logger logger() {
+        return LOGGER;
+    }
 
     @Override
     public void clear() {
         functions.clear();
     }
 
-    public void addElement(Name name) {
+    public void addElement(AstNode name) {
         addElement(name.getString());
     }
 
