@@ -15,7 +15,6 @@ public class GetAstRoot {
     private static CompilerEnvirons env = new CompilerEnvirons();
 
     static {
-        CompilerEnvirons env = new CompilerEnvirons();
         env.setRecoverFromErrors(true);
         env.setGenerateDebugInfo(true);
         env.setRecordingComments(true);
