@@ -3,6 +3,8 @@ package org.rhino.js.dependencies.models;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
+import java.util.Objects;
+
 public class FunctionName implements Comparable<FunctionName> {
 
     // Format to display type and name.
@@ -13,12 +15,12 @@ public class FunctionName implements Comparable<FunctionName> {
 
     public FunctionName(String name) {
         preCheckStringNotNullOrEmpty(name);
-
         this.name = name;
     }
 
     public FunctionName(String type, String name) {
         this(name);
+
         preCheckStringNotNullOrEmpty(type);
         this.type = type;
     }
@@ -46,23 +48,25 @@ public class FunctionName implements Comparable<FunctionName> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null) {
+            return false;
+        }
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        if (this == o) {
+            return true;
+        }
 
         FunctionName that = (FunctionName) o;
 
-        if (!name.equals(that.name)) return false;
-        if (type != null && that.type != null) return type.equals(that.type);
-
-        return true;
+        return Objects.equals(name, that.name)
+                && Objects.equals(type, that.type);
     }
 
     @Override
     public int hashCode() {
-        int result = type != null ? type.hashCode() : 0;
-        result = 31 * result + name.hashCode();
-
-        return result;
+        return com.google.common.base.Objects.hashCode(type, name);
     }
 
     @Override

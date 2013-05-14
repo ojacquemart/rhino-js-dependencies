@@ -40,12 +40,18 @@ public class ProtoypeFunctionVisitor extends FunctionVisitor {
         }
 
         private String getPrototypeName(AstNode leftNode) {
-            // For prototype static methods declaration: Foo.bar = function() {};
+            /*
+             For prototype static methods declaration:
+             <code>Foo.bar = function() {};</code>
+            */
             if (leftNode instanceof  Name) {
                 return leftNode.getString();
             }
 
-            // For classic prototype methods declaration: Foo.prototype.bar = function() {};
+            /*
+             For classic prototype methods declaration:
+             <code>Foo.prototype.bar = function() {};</code>
+              */
             if (leftNode instanceof  PropertyGet) {
                 PropertyGet property = (PropertyGet) leftNode;
                 if (property.getLeft() instanceof  Name && equalsToPrototype(property.getRight())) {

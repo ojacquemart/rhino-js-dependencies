@@ -13,7 +13,10 @@ public class JqueryFunctionVisitor extends FunctionVisitor {
 
     @Override
     public boolean visit(AstNode node) {
-        // Jquery possible function : $.fn.FUNCTION = function() {};
+        /*
+         * Jquery possible function :
+         * <code>$.fn.FUNCTION = function() {};</code>
+         */
         // TODO: see another possible declarations.
 
         if (node instanceof PropertyGet

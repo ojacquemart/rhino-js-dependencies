@@ -17,6 +17,8 @@ public class UsageResolver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UsageResolver.class);
 
+    private UsageResolver() {}
+
     public static void resolveUsagesBetween(List<JsFile> files) {
         Preconditions.checkArgument(files != null);
 
