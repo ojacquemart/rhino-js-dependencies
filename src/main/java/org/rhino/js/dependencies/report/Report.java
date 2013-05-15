@@ -45,7 +45,7 @@ public class Report {
     /**
      * By default, flush in sysout is enabled.
      */
-    private boolean forTest = true;
+    private boolean forTest = false;
 
     /**
      * List of javascript files analysed.
