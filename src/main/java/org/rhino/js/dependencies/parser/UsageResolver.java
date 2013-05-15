@@ -25,6 +25,7 @@ public class UsageResolver {
         LOGGER.info("Trying to resolve {} files", files.size());
 
         for (JsFile eachFile : files) {
+            LOGGER.info("Resolving references for {}", eachFile);
             for (JsFile eachOtherFile : files) {
                 if (eachFile.equals(eachOtherFile)) {
                     continue;
@@ -40,15 +41,15 @@ public class UsageResolver {
      * One file uses another if there is at a FunctionName of JsFile#functionCalls in the another JsFile.
      */
     private static void resolve(JsFile file1, JsFile file2) {
-        LOGGER.info("Try to resolve usages of file {} in {}", file2, file1);
+        LOGGER.debug("Try to resolve usages of file {} in {}", file2, file1);
 
         Set<FunctionName> file1Functions = file1.getFileInfo().getFunctions();
 
         for (FunctionName eachFunction : file1Functions) {
-            LOGGER.debug("Search for {} usages", eachFunction.getString());
+            LOGGER.trace("Search for {} usages", eachFunction.getString());
 
             if (file2.usesFunction(eachFunction)) {
-                LOGGER.debug("\t* File {} uses {}:{}", file2, file1, eachFunction);
+                LOGGER.trace("\t* File {} uses {}:{}", file2, file1, eachFunction);
                 file1.getUsages().add(new JsFile(file2.getFile()));
 
                 // file2 use one function of file1, stop looping.
