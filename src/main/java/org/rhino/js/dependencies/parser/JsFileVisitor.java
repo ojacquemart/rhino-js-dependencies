@@ -20,6 +20,9 @@ public class JsFileVisitor implements NodeVisitor {
         FUNCTION_DECLARATION_VISITOR.add(new PrototypeFunctionVisitor());
         FUNCTION_DECLARATION_VISITOR.add(new ObjectFunctionVisitor());
         FUNCTION_DECLARATION_VISITOR.add(new JqueryFunctionVisitor());
+
+        // Call visitor must always be in the last position.
+        FUNCTION_DECLARATION_VISITOR.add(FUNCTION_CALL_VISITOR);
     }
 
     private JsFileVisitor() {
@@ -40,33 +43,25 @@ public class JsFileVisitor implements NodeVisitor {
         for (FunctionVisitor eachVisitor : FUNCTION_DECLARATION_VISITOR) {
             eachVisitor.clear();
         }
-        FUNCTION_CALL_VISITOR.clear();
     }
 
     @Override
     public boolean visit(AstNode node) {
         LOGGER.trace("Node type: {}", Token.typeToName(node.getType()));
 
-        visitByFunctionDeclarations(node);
-        visitByFunctionCalls(node);
-
-        return true;
-    }
-
-    private void visitByFunctionDeclarations(AstNode node) {
         for (FunctionVisitor eachVisitor : FUNCTION_DECLARATION_VISITOR) {
             node.visit(eachVisitor);
         }
-    }
 
-    private void visitByFunctionCalls(AstNode node) {
-        node.visit(FUNCTION_CALL_VISITOR);
+        return true;
     }
 
     public Set<FunctionName> getFunctions() {
         Set<FunctionName> functions = new TreeSet<>();
 
-        for (FunctionVisitor eachVisitor : FUNCTION_DECLARATION_VISITOR) {
+        // Get all functions from visitors except #FUNCTION_CALL_VISITOR, which is always in the last position.
+        List<FunctionVisitor> visitors = FUNCTION_DECLARATION_VISITOR.subList(0, FUNCTION_DECLARATION_VISITOR.size() - 1);
+        for (FunctionVisitor eachVisitor : visitors) {
             functions.addAll(eachVisitor.getElements());
         }
 
