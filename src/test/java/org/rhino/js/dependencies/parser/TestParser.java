@@ -14,7 +14,7 @@ public class TestParser {
 
     @Test
     public void testParse() {
-        JsFile jsFile = JsFiles.JQUERY_PLUGIN.toJsFile();
+        JsFile jsFile = TestableJsFiles.JQUERY_PLUGIN.toJsFile();
         Parser.parse(jsFile);
         assertJsFileInfo(jsFile.getFileInfo());
     }

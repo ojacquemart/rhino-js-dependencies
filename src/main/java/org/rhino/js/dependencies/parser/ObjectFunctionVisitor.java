@@ -12,7 +12,7 @@ public class ObjectFunctionVisitor extends FunctionVisitor {
 
     @Override
     public boolean visit(AstNode node) {
-        if (node.getType() == Token.OBJECTLIT) {
+        if (node.getType() == Token.OBJECTLIT && node.getParent() != null && node.getParent() instanceof ReturnStatement) {
             ObjectLiteral objectLiteral = (ObjectLiteral) node;
 
             String objectName = getObjectName(objectLiteral);
@@ -24,6 +24,8 @@ public class ObjectFunctionVisitor extends FunctionVisitor {
                     addElement(String.format("%s#%s", objectName, functionName));
                 }
             }
+            return false;
+
         }
 
         return true;

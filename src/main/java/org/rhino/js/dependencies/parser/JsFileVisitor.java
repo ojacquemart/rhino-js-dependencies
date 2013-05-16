@@ -17,7 +17,7 @@ public class JsFileVisitor implements NodeVisitor {
 
     static {
         FUNCTION_DECLARATION_VISITOR.add(new SimpleFunctionVisitor());
-        FUNCTION_DECLARATION_VISITOR.add(new ProtoypeFunctionVisitor());
+        FUNCTION_DECLARATION_VISITOR.add(new PrototypeFunctionVisitor());
         FUNCTION_DECLARATION_VISITOR.add(new ObjectFunctionVisitor());
         FUNCTION_DECLARATION_VISITOR.add(new JqueryFunctionVisitor());
     }
@@ -45,7 +45,7 @@ public class JsFileVisitor implements NodeVisitor {
 
     @Override
     public boolean visit(AstNode node) {
-        LOGGER.debug("Node type: {}", Token.typeToName(node.getType()));
+        LOGGER.trace("Node type: {}", Token.typeToName(node.getType()));
 
         visitByFunctionDeclarations(node);
         visitByFunctionCalls(node);

@@ -16,11 +16,10 @@ public class SimpleFunctionVisitor extends FunctionVisitor {
 
             String functionName = Strings.nullToEmpty(functionNode.getName());
             if (!functionName.isEmpty()) {
-                addElement(functionNode.getName());
+                return addElement(functionNode.getName());
             } else {
                 return checkUnnamedFunction(functionNode);
             }
-
         }
 
         return false;
@@ -31,7 +30,7 @@ public class SimpleFunctionVisitor extends FunctionVisitor {
      *
      * @param functionNode the function node.
      * @return <code>true</code> if we should continue to visit children
-     * If <code>false</code>, an unnamed funciton has been found, we should stop to visit.
+     *         If <code>false</code>, an unnamed funciton has been found, we should stop to visit.
      */
     private boolean checkUnnamedFunction(FunctionNode functionNode) {
         logger().debug("Check unamed function");
@@ -39,13 +38,11 @@ public class SimpleFunctionVisitor extends FunctionVisitor {
         /**
          * Variable assignment.
          * <code>var hello = function() {};</code>
-          */
+         */
         if (functionNode.getParent() instanceof VariableInitializer) {
             VariableInitializer var = (VariableInitializer) functionNode.getParent();
             if (var.getTarget() instanceof Name) {
-                addElement(var.getTarget());
-
-                return false;
+                return addElement(var.getTarget());
             }
         }
 
@@ -56,9 +53,7 @@ public class SimpleFunctionVisitor extends FunctionVisitor {
         if (functionNode.getParent() instanceof Assignment) {
             Assignment leftAssig = (Assignment) functionNode.getParent();
             if (leftAssig.getLeft() instanceof Name) {
-
-                addElement(leftAssig.getLeft());
-                return false;
+                return addElement(leftAssig.getLeft());
             }
         }
 

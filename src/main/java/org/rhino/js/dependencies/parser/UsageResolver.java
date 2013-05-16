@@ -41,7 +41,7 @@ public class UsageResolver {
      * One file uses another if there is at a FunctionName of JsFile#functionCalls in the another JsFile.
      */
     private static void resolve(JsFile file1, JsFile file2) {
-        LOGGER.debug("Try to resolve usages of file {} in {}", file2, file1);
+        LOGGER.trace("Try to resolve usages of file {} in {}", file2, file1);
 
         Set<FunctionName> file1Functions = file1.getFileInfo().getFunctions();
 

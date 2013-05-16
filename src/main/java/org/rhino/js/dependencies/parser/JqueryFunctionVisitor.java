@@ -18,21 +18,25 @@ public class JqueryFunctionVisitor extends FunctionVisitor {
          * <code>$.fn.FUNCTION = function() {};</code>
          */
         // TODO: see another possible declarations.
+        if (isJqueryPluginFunction(node)) {
+            LOGGER.debug("Found jquery tokens $.fn.FUNCTION");
 
+            FunctionName funcName = new FunctionName("$", ((PropertyGet) node).getRight().getString());
+            return addAndContinueVisit(funcName);
+        }
+
+        return true;
+    }
+
+    private boolean isJqueryPluginFunction(AstNode node) {
         if (node instanceof PropertyGet
                 && ((PropertyGet) node).getLeft() instanceof PropertyGet
                 && ((PropertyGet) node).getRight() instanceof Name) {
             PropertyGet leftProp = (PropertyGet) ((PropertyGet) node).getLeft();
-            boolean jqueryTokenFound = hasJqueryTokenInProperty(leftProp);
-            if (jqueryTokenFound) {
-                LOGGER.debug("Found jquery tokens $ and fn: {}", jqueryTokenFound);
-
-                FunctionName funcName = new FunctionName("$", ((PropertyGet) node).getRight().getString());
-                addElement(funcName);
-            }
+            return hasJqueryTokenInProperty(leftProp);
         }
 
-        return true;
+        return false;
     }
 
     private boolean hasJqueryTokenInProperty(PropertyGet propertyGet) {

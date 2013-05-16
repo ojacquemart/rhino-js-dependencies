@@ -27,7 +27,7 @@ public class TestJsFileInfoResolver {
 
     @Test
     public void testGetFunctions() throws IOException {
-        JsFileInfo jsFileInfo = getJsFileInfo(JsFiles.SIMPLE.getFileName());
+        JsFileInfo jsFileInfo = getJsFileInfo(TestableJsFiles.SIMPLE.getFileName());
 
         Set<?> functions = jsFileInfo.getFunctions();
         assertNotNull(functions);

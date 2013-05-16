@@ -1,5 +1,6 @@
 package org.rhino.js.dependencies.parser;
 
+import com.google.common.base.Strings;
 import org.mozilla.javascript.Token;
 import org.mozilla.javascript.ast.*;
 import org.rhino.js.dependencies.models.FunctionName;
@@ -14,7 +15,7 @@ import java.util.TreeSet;
 /**
  * Function call visitor.
  */
-public class FunctionCallVisitor implements ContainerFunction, NodeVisitor {
+public class FunctionCallVisitor extends FunctionVisitor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FunctionCallVisitor.class);
 
@@ -23,7 +24,7 @@ public class FunctionCallVisitor implements ContainerFunction, NodeVisitor {
 
     @Override
     public boolean visit(AstNode node) {
-        // Try to guess the function calls type.
+        // Try to guess the types of function calls.
         if (node.getParent() != null && node.getParent().getType() == Token.VAR){
             storeDefinableTypes(node.getParent());
         }
@@ -32,47 +33,17 @@ public class FunctionCallVisitor implements ContainerFunction, NodeVisitor {
             return false;
         }
 
-        // Find functions call and try to get the defined type of function.
+        // Simple function calls are in target.
         AstNode target = ((FunctionCall) node).getTarget();
-        if (target.getType() == Token.NAME) {
-            addElement((Name) target);
+        if (target instanceof Name) {
+            return addElement(target);
         }
-        else if (target.getType() == Token.GETPROP) {
-            tryToGetDefinedTypeByVariableName((PropertyGet) target);
+        // Either way, a function call be called from different ways...
+        if (target instanceof PropertyGet) {
+            return checkPossibleCalls((PropertyGet) target);
         }
 
         return true;
-    }
-
-    private void tryToGetDefinedTypeByVariableName(PropertyGet propertyGet) {
-        AstNode right = propertyGet.getRight();
-        if (right.getType() == Token.NAME) {
-            String functionName = right.getString();
-            LOGGER.debug("Try to get defined type of function {}", functionName);
-            String variableName = getVariableName(propertyGet);
-            if (variableName != null) {
-                addFunctionCallByInstance(variableName, functionName);
-            } else {
-                addElement(functionName);
-            }
-        }
-    }
-
-    private void addFunctionCallByInstance(String variableName, String functionName) {
-        String instanceType = variableNamesByType.get(variableName);
-        if (instanceType != null) {
-            addElement(instanceType, functionName);
-        }  else {
-            addElement(functionName);
-        }
-    }
-
-    private String getVariableName(PropertyGet propertyGet) {
-        if (propertyGet.getLeft().getType() == Token.NAME) {
-            return propertyGet.getLeft().getString();
-        }
-
-        return null;
     }
 
     /**
@@ -95,7 +66,6 @@ public class FunctionCallVisitor implements ContainerFunction, NodeVisitor {
         }
 
         return true;
-
     }
 
     /**
@@ -116,33 +86,95 @@ public class FunctionCallVisitor implements ContainerFunction, NodeVisitor {
         }
     }
 
-    @Override
-    public void clear() {
-        functionCalls = new TreeSet<>();
+    private boolean checkPossibleCalls(PropertyGet propGet) {
+        if (isPrototypeStaticCall(propGet)) {
+            return false;
+        }
+        if (isJqueryPluginFunctionCall(propGet)) {
+            return false;
+        }
+
+        AstNode right = propGet.getRight();
+        if (right.getType() == Token.NAME) {
+            return tryToDefineTypedFunctionCall(propGet);
+        }
+
+        return true;
     }
 
-    public void addElement(Name name) {
-        addElement(name.getString());
+    /**
+     * Specific method to get a method call from a static prototype.
+     * Example: <code>Proto.static();</code>
+     *
+     * @param propGet the property.
+     * @return <code>true</code> if we should continue to visit the children
+     *         <code>false</code> if we have found a static prototype method call.
+     */
+    private boolean isPrototypeStaticCall(PropertyGet propGet) {
+        if (propGet.getLeft() instanceof Name && propGet.getRight() instanceof Name) {
+            String maybePrototypeName = Strings.nullToEmpty(propGet.getLeft().getString());
+            if (startsWithUpperCase(maybePrototypeName)) {
+                return !addElement(maybePrototypeName, propGet.getRight().getString());
+            }
+        }
+
+        return false;
     }
 
-    public void addElement(String name) {
-        addElement(new FunctionName(name));
-    }
-    public void addElement(String type, String name) {
-        addElement(new FunctionName(type, name));
-    }
+    private boolean startsWithUpperCase(String value) {
+        String maybePrototypeName = Strings.nullToEmpty(value);
+        if (maybePrototypeName.isEmpty()) {
+            return false;
+        }
 
-    @Override
-    public void addElement(FunctionName functionName) {
-        functionCalls.add(functionName);
+        return (Character.isUpperCase(maybePrototypeName.charAt(0)));
     }
 
-    @Override
-    public Set<FunctionName> getElements() {
-        LOGGER.info("Found {} function calls", functionCalls.size());
-        LOGGER.debug("Function calls found: {}", functionCalls);
+    private boolean isJqueryPluginFunctionCall(PropertyGet propertyGet) {
+        if (propertyGet.getLeft() instanceof FunctionCall && propertyGet.getRight() instanceof Name) {
+            FunctionCall funcCall = (FunctionCall) propertyGet.getLeft();
+            if (funcCall.getTarget() instanceof Name && "$".equals(funcCall.getTarget().getString())) {
+                return !addElement("$", propertyGet.getRight().getString());
+            }
+        }
 
-        return functionCalls;
+        return false;
+    }
+
+    private boolean tryToDefineTypedFunctionCall(PropertyGet propertyGet) {
+        String functionName = propertyGet.getRight().getString();
+        LOGGER.debug("Try to get defined type of function {}", functionName);
+
+        String variableName = getVariableName(propertyGet);
+        if (variableName != null) {
+            addFunctionCallByInstance(variableName, functionName);
+        } else {
+            addElement(functionName);
+        }
+
+        return false;
+    }
+
+    /**
+     * Get variable name from a property.
+     * @param propertyGet the property.
+     * @return the variable name if found else null.
+     */
+    private String getVariableName(PropertyGet propertyGet) {
+        if (propertyGet.getLeft().getType() == Token.NAME) {
+            return propertyGet.getLeft().getString();
+        }
+
+        return null;
+    }
+
+    private void addFunctionCallByInstance(String variableName, String functionName) {
+        String instanceType = variableNamesByType.get(variableName);
+        if (instanceType != null) {
+            addElement(instanceType, functionName);
+        }  else {
+            addElement(functionName);
+        }
     }
 
 }
