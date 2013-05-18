@@ -2,7 +2,7 @@ package org.rhino.js.dependencies.report;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
-import org.rhino.js.dependencies.io.JsTreeFiles;
+import org.rhino.js.dependencies.io.JsPathFiles;
 import org.rhino.js.dependencies.models.JsFile;
 import org.rhino.js.dependencies.parser.Parser;
 
@@ -29,7 +29,7 @@ public class TestReport {
 
     @Test
     public void testGenerate() {
-        List<JsFile> jsFiles = Parser.parseAll(JsTreeFiles.getJsFiles("src/test"));
+        List<JsFile> jsFiles = Parser.parseAll(JsPathFiles.getFiles("src/test"));
 
         Report report = new Report();
         report.setRootJsDir("src/test");

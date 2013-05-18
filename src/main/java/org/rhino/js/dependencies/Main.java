@@ -1,6 +1,6 @@
 package org.rhino.js.dependencies;
 
-import org.rhino.js.dependencies.io.JsTreeFiles;
+import org.rhino.js.dependencies.io.JsPathFiles;
 import org.rhino.js.dependencies.models.JsFile;
 import org.rhino.js.dependencies.parser.Parser;
 import org.rhino.js.dependencies.report.Report;
@@ -34,7 +34,7 @@ public class Main {
     }
 
     public void start() {
-        List<JsFile> jsFiles = Parser.parseAll(JsTreeFiles.getJsFiles(jsDir));
+        List<JsFile> jsFiles = Parser.parseAll(JsPathFiles.getFiles(jsDir));
         Report report = new Report();
         report.setOutputDir(outputDir)
                 .setJsFiles(jsFiles)

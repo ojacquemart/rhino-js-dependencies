@@ -1,7 +1,7 @@
 package org.rhino.js.dependencies.parser;
 
 import org.junit.Test;
-import org.rhino.js.dependencies.io.JsTreeFiles;
+import org.rhino.js.dependencies.io.JsPathFiles;
 import org.rhino.js.dependencies.models.JsFile;
 import org.rhino.js.dependencies.models.JsFileInfo;
 
@@ -21,7 +21,7 @@ public class TestParser {
 
     @Test
     public void testParseAll() throws IOException {
-        List<JsFile> jsFiles = JsTreeFiles.getJsFiles("src/test");
+        List<JsFile> jsFiles = JsPathFiles.getFiles("src/test");
         Parser.parseAll(jsFiles);
         for (JsFile eachJsFile : jsFiles) {
             JsFileInfo fileInfo = eachJsFile.getFileInfo();
