@@ -2,8 +2,8 @@ package org.rhino.js.dependencies.parser;
 
 import org.junit.Test;
 import org.rhino.js.dependencies.io.JsPathFiles;
+import org.rhino.js.dependencies.models.FileInfo;
 import org.rhino.js.dependencies.models.JsFile;
-import org.rhino.js.dependencies.models.JsFileInfo;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,7 +16,7 @@ public class TestParser {
     public void testParse() {
         JsFile jsFile = TestableJsFiles.JQUERY_PLUGIN.toJsFile();
         Parser.parse(jsFile);
-        assertJsFileInfo(jsFile.getFileInfo());
+        assertJsFileInfo(jsFile.getFile().getName(), jsFile.getFileInfo());
     }
 
     @Test
@@ -24,15 +24,15 @@ public class TestParser {
         List<JsFile> jsFiles = JsPathFiles.getFiles("src/test");
         Parser.parseAll(jsFiles);
         for (JsFile eachJsFile : jsFiles) {
-            JsFileInfo fileInfo = eachJsFile.getFileInfo();
-            assertJsFileInfo(fileInfo);
+            FileInfo fileInfo = eachJsFile.getFileInfo();
+            assertJsFileInfo(eachJsFile.getFile().getName(), fileInfo);
         }
     }
 
-    private static void assertJsFileInfo(JsFileInfo fileInfo) {
-        assertNotNull(fileInfo);
-        assertNotNull(fileInfo.getFunctions());
-        assertTrue(fileInfo.getFunctions().size() > 0);
+    private static void assertJsFileInfo(String fileName, FileInfo fileInfo) {
+        assertNotNull("fileInfo is null for " + fileName, fileInfo);
+        assertNotNull("Functions is null for " + fileName, fileInfo.getFunctions());
+        assertTrue("File functions is empty for " + fileName, fileInfo.getFunctions().size() > 0);
     }
 
 }

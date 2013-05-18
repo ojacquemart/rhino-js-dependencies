@@ -3,9 +3,9 @@ package org.rhino.js.dependencies.parser;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.junit.Test;
+import org.rhino.js.dependencies.models.FileInfo;
 import org.rhino.js.dependencies.models.FunctionName;
 import org.rhino.js.dependencies.models.JsFile;
-import org.rhino.js.dependencies.models.JsFileInfo;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -45,7 +45,7 @@ public class TestUsageResolver {
 
     private static JsFile getJsFile(Set<FunctionName> functions, Set<FunctionName> functionCalls) {
         JsFile jsFile = new JsFile(UUID.randomUUID().toString());
-        jsFile.setFileInfo(new JsFileInfo(functions, functionCalls));
+        jsFile.setFileInfo(new FileInfo(functions, functionCalls));
 
         return jsFile;
     }

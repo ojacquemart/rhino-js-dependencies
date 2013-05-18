@@ -43,16 +43,16 @@ public class TestJsFile {
 
     private JsFile getJsFileNulls() {
         JsFile jsFile = getJsFile("foo");
-        jsFile.setFileInfo(new JsFileInfo(null, null));
+        jsFile.setFileInfo(new FileInfo(null, null));
 
         return jsFile;
     }
 
-    private static JsFileInfo getJsFileInfo() {
+    private static FileInfo getJsFileInfo() {
         Set<FunctionName> functions = Sets.newTreeSet(Lists.newArrayList(FunctionName.newInstance("$#bind")));
         Set<FunctionName> functions1 = Sets.newTreeSet(Lists.newArrayList(FunctionName.newInstance("$#click")));
 
-        return new JsFileInfo(functions, functions1);
+        return new FileInfo(functions, functions1);
     }
 
     @Test

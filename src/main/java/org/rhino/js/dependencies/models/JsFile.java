@@ -12,7 +12,7 @@ import java.util.TreeSet;
 public class JsFile implements Comparable<JsFile> {
 
     private File file;
-    private JsFileInfo fileInfo = JsFileInfo.emptyFileInfo();
+    private FileInfo fileInfo = FileInfo.emptyFileInfo();
     private Set<JsFile> usages = new TreeSet<>();
 
     public JsFile(File file) {
@@ -43,11 +43,11 @@ public class JsFile implements Comparable<JsFile> {
         return file;
     }
 
-    public JsFileInfo getFileInfo() {
+    public FileInfo getFileInfo() {
         return fileInfo;
     }
 
-    public void setFileInfo(JsFileInfo fileInfo) {
+    public void setFileInfo(FileInfo fileInfo) {
         Preconditions.checkArgument(fileInfo != null);
 
         this.fileInfo = fileInfo;

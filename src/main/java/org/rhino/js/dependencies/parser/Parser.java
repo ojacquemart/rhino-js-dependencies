@@ -18,7 +18,7 @@ public class Parser {
     }
 
     public static void parse(JsFile jsFile) {
-        jsFile.setFileInfo(JsFileInfoResolver
+        jsFile.setFileInfo(FileInfoResolver
                 .forFile(jsFile.getFile())
                 .getJsFileInfo());
     }

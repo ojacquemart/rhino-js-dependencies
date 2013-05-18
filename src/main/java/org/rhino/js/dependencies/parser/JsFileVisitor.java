@@ -3,17 +3,23 @@ package org.rhino.js.dependencies.parser;
 import org.mozilla.javascript.Token;
 import org.mozilla.javascript.ast.*;
 import org.rhino.js.dependencies.models.FunctionName;
+import org.rhino.js.dependencies.models.SetOfInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public class JsFileVisitor implements NodeVisitor {
+public class JsFileVisitor implements SetOfInfo, NodeVisitor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JsFileVisitor.class);
 
     private static final List<FunctionVisitor> FUNCTION_DECLARATION_VISITOR = new ArrayList<>();
     private static final FunctionCallVisitor FUNCTION_CALL_VISITOR = new FunctionCallVisitor();
+
+    /**
+     * Lines of code.
+     */
+    private int loc;
 
     static {
         FUNCTION_DECLARATION_VISITOR.add(new SimpleFunctionVisitor());
@@ -25,18 +31,18 @@ public class JsFileVisitor implements NodeVisitor {
         FUNCTION_DECLARATION_VISITOR.add(FUNCTION_CALL_VISITOR);
     }
 
-    private JsFileVisitor() {
+    public JsFileVisitor() {
     }
 
-    public static JsFileVisitor newInstance(AstNode root) {
-        LOGGER.debug("Visiting root node");
+    public void startRootVisit(AstNode root) {
+        LOGGER.debug("Visiting root node {}", Token.typeToName(root.getType()));
+
+        this.loc = ((ScriptNode) root).getEndLineno();
+        LOGGER.debug("LOC: {}", loc);
 
         clearVisitors();
 
-        JsFileVisitor visitor = new JsFileVisitor();
-        root.visit(visitor);
-
-        return visitor;
+        root.visit(this);
     }
 
     private static void clearVisitors() {
@@ -72,6 +78,11 @@ public class JsFileVisitor implements NodeVisitor {
 
     public Set<FunctionName> getFunctionCalls() {
         return FUNCTION_CALL_VISITOR.getElements();
+    }
+
+    @Override
+    public int getLinesOfCode() {
+        return loc;
     }
 
 }

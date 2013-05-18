@@ -36,7 +36,11 @@ public class TestJsFileVisitor {
 
     private static void assertJsFile(TestableJsFiles testFile) {
         AstRoot root = GetAstRoot.getRoot(testFile.getFileName());
-        JsFileVisitor visitor = JsFileVisitor.newInstance(root);
+        JsFileVisitor visitor = new JsFileVisitor();
+        visitor.startRootVisit(root);
+
+        int loc = visitor.getLinesOfCode();
+        assertTrue(loc > 0);
 
         Set<FunctionName> functions = visitor.getFunctions();
         assertFalse(functions.isEmpty());
