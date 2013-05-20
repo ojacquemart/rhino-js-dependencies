@@ -25,12 +25,12 @@ public class JsFile implements JsFileAttribute, Comparable<JsFile> {
     }
 
     @Override
-    public String name() {
+    public String getName() {
         return file.getName();
     }
 
     @Override
-    public int numberOfLoc() {
+    public int getNumberOfLoc() {
         return fileInfo.getNumberLoc();
     }
 
@@ -38,8 +38,8 @@ public class JsFile implements JsFileAttribute, Comparable<JsFile> {
      * Returns <code>1</code> if the file is minified, else <code>0</code>.
      */
     @Override
-    public int numberOfMinified() {
-        if (Files.getNameWithoutExtension(name()).endsWith(".min")) {
+    public int getNumberOfMinified() {
+        if (Files.getNameWithoutExtension(getName()).endsWith(".min")) {
             return 1;
         }
 

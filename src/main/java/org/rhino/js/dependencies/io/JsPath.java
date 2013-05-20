@@ -22,17 +22,21 @@ public class JsPath implements JsFileAttribute, Comparable<JsPath> {
     }
 
     @Override
-    public String name() {
+    public String getName() {
         return dir;
     }
 
+    public int getNumberOfFiles() {
+        return files.size();
+    }
+
     @Override
-    public int numberOfLoc() {
+    public int getNumberOfLoc() {
         return JsPaths.getTotalOfLoc(files);
     }
 
     @Override
-    public int numberOfMinified() {
+    public int getNumberOfMinified() {
         return JsPaths.getNumberOfMinifiedFiles(files);
     }
 

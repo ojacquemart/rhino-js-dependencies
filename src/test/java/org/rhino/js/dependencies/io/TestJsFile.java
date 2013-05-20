@@ -35,10 +35,10 @@ public class TestJsFile {
         // Must be equal to 1 if its a minfied file.
 
         JsFile file = getJsFile("foo.js");
-        assertEquals(0, file.numberOfMinified());
+        assertEquals(0, file.getNumberOfMinified());
 
         JsFile minFile = getJsFile("foo.min.js");
-        assertEquals(1, minFile.numberOfMinified());
+        assertEquals(1, minFile.getNumberOfMinified());
     }
 
     private static FileInfo getJsFileInfo() {

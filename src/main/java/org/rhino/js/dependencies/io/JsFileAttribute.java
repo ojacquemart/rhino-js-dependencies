@@ -5,16 +5,16 @@ public interface JsFileAttribute {
     /**
      * Returns the name of the file.
      */
-    String name();
+    String getName();
 
     /**
      * Returnss the number of lines of code.
      */
-    int numberOfLoc();
+    int getNumberOfLoc();
 
     /**
      * Returns the the number of minified elements.
      */
-    int numberOfMinified();
+    int getNumberOfMinified();
 
 }

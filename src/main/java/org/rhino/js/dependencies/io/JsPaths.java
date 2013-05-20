@@ -58,7 +58,7 @@ public final class JsPaths {
     public static int getTotalOfLoc(Collection<? extends JsFileAttribute> fileAttributes) {
         int total = 0;
         for (JsFileAttribute fileAttribute : fileAttributes) {
-            total += fileAttribute.numberOfLoc();
+            total += fileAttribute.getNumberOfLoc();
         }
 
         return total;
@@ -88,7 +88,7 @@ public final class JsPaths {
     public static int getNumberOfMinifiedFiles(Collection<? extends JsFileAttribute> fileAttributes) {
         int total = 0;
         for (JsFileAttribute fileAttribute : fileAttributes) {
-            total += fileAttribute.numberOfMinified();
+            total += fileAttribute.getNumberOfMinified();
         }
 
         return total;
