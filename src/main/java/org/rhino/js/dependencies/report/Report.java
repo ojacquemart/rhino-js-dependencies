@@ -1,151 +1,52 @@
 package org.rhino.js.dependencies.report;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Stopwatch;
-import org.joda.time.DateTime;
-import org.rhino.js.dependencies.models.JsFile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.rhino.js.dependencies.io.JsPath;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
- * Report javascript analysis for a given directory with a template using mustache.java.
- *
- * Note: the base variables used in mustache.java templates must have a getter without the "get" prefix.
+ * Interface to generate report based on a mustache-java template.
  */
-public class Report {
-
-    public static final String DATE_PATTERN_YYMMDD_HHMM = "YMMdd_HHmm";
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Report.class);
+public interface Report {
 
     /**
-     * Output directory to store the report.
+     * Returns the report date.
      */
-    private String outputDir;
+    String getDate();
 
     /**
-     * The javascript root directory analysed.
+     * Returns the root javascript dir.
      */
-    private String rootJsDir;
+    String getRootJsDir();
 
     /**
-     * Default template is Template#TEXT.
+     * Sets the root js dir.
      */
-    private Template template = Template.TEXT;
+    void setRootJsDir(String rootJsDir);
 
     /**
-     * By default, flush in sysout is enabled.
+     * Returns the javascript paths.
      */
-    private boolean forTest = false;
+    List<JsPath> getPaths();
 
     /**
-     * List of javascript files analysed.
+     * Sets the javascript paths.
      */
-    private List<JsFile> jsFiles;
-
-    public Report setOutputDir(String outputDir) {
-        this.outputDir = outputDir;
-        return this;
-    }
-
-    public Report setRootJsDir(String rootJsDir) {
-        Preconditions.checkArgument(rootJsDir != null);
-        this.rootJsDir = rootJsDir;
-        return this;
-    }
-
-    public Report setTemplate(Template template) {
-        Preconditions.checkArgument(template != null);
-        this.template = template;
-        return this;
-    }
-
-    public Report setJsFiles(List<JsFile> jsFiles) {
-        Preconditions.checkArgument(jsFiles != null);
-        this.jsFiles = jsFiles;
-        return this;
-    }
-
-    public void setJustForTest(boolean forTest) {
-        this.forTest = forTest;
-    }
-
-    // Mustache getters without prefixes.
-
-    public List<JsFile> jsFiles() {
-        return jsFiles;
-    }
-
-    public String rootJsDir() {
-        return rootJsDir;
-    }
-
-    public int nbFiles() {
-        if (jsFiles != null) {
-            return jsFiles.size();
-        }
-        return 0;
-    }
-
-    public String date() {
-        return DateTime.now().toString(DATE_PATTERN_YYMMDD_HHMM);
-    }
+    void setPaths(List<JsPath> paths);
 
     /**
-     * Generate the report.
-     * TODO: try to precompile the templates.
+     * Returns the total number of lines of code.
      */
-    public void generate() {
-        try {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.start();
+    int getNumberOfLoc();
 
-            LOGGER.info("Generating report");
-            LOGGER.info("\ttemplate used: {}", template.getName());
+    /**
+     * Returns the total number of files.
+     */
+    int getNumberOfFiles();
 
-            MustacheFactory mf = new DefaultMustacheFactory();
-            Mustache mustache = mf.compile(template.getName());
-            if (forTest) {
-                mustache.execute(new PrintWriter(System.out), this).flush();
-            } else {
-                File outputFile = getFile();
-                LOGGER.info("\toutput directory: {}", outputFile.getAbsolutePath());
-
-                mustache.execute(new PrintWriter(outputFile), this).flush();
-            }
-
-            stopwatch.stop();
-            LOGGER.info("Report generated in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
-        } catch (IOException e) {
-            throw new IllegalStateException("Error during generating report", e);
-        }
-    }
-
-    public File getFile() {
-        return new File(getBaseDir() + File.separator + getName());
-    }
-
-    public String getBaseDir() {
-        if (outputDir == null) {
-            return rootJsDir;
-        }
-
-        return outputDir;
-    }
-
-    public String getName() {
-        return String.format("%s_%s",
-                DateTime.now().toString(DATE_PATTERN_YYMMDD_HHMM),
-                template.getReportName());
-    }
+    /**
+     * Returns the total number of minified files.
+     */
+    int getNumberOfMinifiedFiles();
 
 }

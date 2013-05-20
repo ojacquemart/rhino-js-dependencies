@@ -1,15 +1,11 @@
 package org.rhino.js.dependencies;
 
-import org.rhino.js.dependencies.io.JsPathFiles;
-import org.rhino.js.dependencies.models.JsFile;
-import org.rhino.js.dependencies.parser.Parser;
-import org.rhino.js.dependencies.report.Report;
+import org.rhino.js.dependencies.report.ReportMaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 /**
  * org.rhino.js.dependencies.Main class.
@@ -34,11 +30,9 @@ public class Main {
     }
 
     public void start() {
-        List<JsFile> jsFiles = Parser.parseAll(JsPathFiles.getFiles(jsDir));
-        Report report = new Report();
-        report.setOutputDir(outputDir)
-                .setJsFiles(jsFiles)
-                .setJsFiles(jsFiles)
+        ReportMaker reportMaker = new ReportMaker();
+        reportMaker.setOutputDir(outputDir)
+                .prepareData(jsDir)
                 .generate();
 
     }

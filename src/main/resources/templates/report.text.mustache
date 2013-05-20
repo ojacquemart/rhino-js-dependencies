@@ -1,33 +1,39 @@
-=====================================
-= Javascript Rhino Js Dependencies  =
-=           Text Report             =
-=====================================
+========================
+=       Dr Rhino       =
+=      Text Report     =
+========================
 
-Directory:              {{rootJsDir}}
+Root directory:         {{rootJsDir}}
 Date:                   {{date}}
-Files analysed:         {{nbFiles}}
+Files:                 {{numberOfFiles}}
+Minified files:         {{numberOfMinifiedFiles}}
+Lines of code (LOC):    {{numberOfLoc}}
 
-{{#jsFiles}}
--------------
-{{file}}
--------------
+{{#paths}}
+> Path: {{name}}
+>===============
+{{#files}}
 
-Methods list
-~~~~~~~~~~~~
+>> File: {{name}}
+* LOC: {{numberOfLoc}}
+
+Methods declaration
+~~~~~~~~~~~~~~~~~~~
 {{#functions}}
-* {{string}}
+* {{name}}
 {{/functions}}
 
-References in another files
-~~~~~~~~~~~~~~~~~~~~~~~
+Files references
+~~~~~~~~~~~~~~~~
 {{#usages}}
 * {{file}}
 {{/usages}}
 
-Methods called from another files
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Methods used
+~~~~~~~~~~~~
 {{#functionCalls}}
-* {{string}}
+* {{name}}
 {{/functionCalls}}
+{{/files}}
 
-{{/jsFiles}}
+{{/paths}}
