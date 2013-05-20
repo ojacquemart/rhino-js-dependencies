@@ -9,10 +9,7 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FileJsVisitor implements FileVisitor<Path> {
 
@@ -23,6 +20,13 @@ public class FileJsVisitor implements FileVisitor<Path> {
      * The map is sorted by its key path cause the dirs are visited in asc order.
      */
     private Map<String, List<JsFile>> filesByPath = new HashMap<>();
+
+    /**
+     * Tests if a file name ends with the javascript extension.
+     */
+    private static boolean hasJsExtension(String fullName) {
+        return "js".equals(Files.getFileExtension(fullName));
+    }
 
     @Override
     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
@@ -51,10 +55,6 @@ public class FileJsVisitor implements FileVisitor<Path> {
         return FileVisitResult.CONTINUE;
     }
 
-    private static boolean hasJsExtension(String fullName) {
-        return "js".equals(Files.getFileExtension(fullName));
-    }
-
     @Override
     public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
         return FileVisitResult.CONTINUE;
@@ -68,6 +68,7 @@ public class FileJsVisitor implements FileVisitor<Path> {
 
     /**
      * Gets all the files flatten.
+     *
      * @return a list of JsFile.
      */
     public List<JsFile> getFiles() {
@@ -84,7 +85,8 @@ public class FileJsVisitor implements FileVisitor<Path> {
     }
 
     /**
-     * Gets all the dir with javascript files.
+     * Gets all the dir with javascript files, sorted by path name.
+     *
      * @return a list of JsPath.
      */
     public List<JsPath> getPaths() {
@@ -100,6 +102,8 @@ public class FileJsVisitor implements FileVisitor<Path> {
                 paths.add(new JsPath(dir, pathFiles));
             }
         }
+
+        Collections.sort(paths);
 
         return paths;
     }
