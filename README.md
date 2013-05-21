@@ -7,6 +7,8 @@ Dr Rhino (Dependencies Resolver with Rhino) is a javascript dependencies resolve
 
 It's based on Mozilla Rhino AST parser.
 
+It needs JDK 7+.
+
 Usage
 -----
 * mvn clean install
@@ -35,3 +37,4 @@ TODO
 * complete parser
 * report using angularjs & d3js.org
 * more doc
+* some license
