@@ -23,4 +23,14 @@ public enum Template {
         return "report." + extension;
     }
 
+    public static Template getReportByType(String type) {
+        for (Template template : values()) {
+            if (template.extension.equals(type)) {
+                return template;
+            }
+        }
+
+        throw new IllegalArgumentException("Illegal template type: " + type);
+    }
+
 }

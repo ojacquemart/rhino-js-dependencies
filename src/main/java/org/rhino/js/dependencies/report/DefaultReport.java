@@ -13,9 +13,21 @@ public class DefaultReport implements Report {
 
     public static final String DATE_PATTERN_YYMMDD_HHMM = "YMMdd";
 
+    private String projectName;
+
     private String rootJsDir;
 
     private List<JsPath> paths;
+
+    @Override
+    public String getProjectName() {
+        return projectName;
+    }
+
+    @Override
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
 
     @Override
     public String getDate() {

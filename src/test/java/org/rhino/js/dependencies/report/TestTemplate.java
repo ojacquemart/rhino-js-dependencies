@@ -23,6 +23,15 @@ public class TestTemplate {
         assertEquals("report.html", Template.HTML.getReportName());
     }
 
+    @Test
+    public void testGetTemplateByType() {
+        assertEquals(Template.TEXT, Template.getReportByType("txt"));
+        assertEquals(Template.HTML, Template.getReportByType("html"));
+    }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetReportByIllegalType() {
+        Template.getReportByType("csv");
+    }
 
 }

@@ -15,20 +15,21 @@ public class TestReportMaker {
     @Test
     public void testGenerate() {
         ReportMaker reportMaker = new ReportMaker();
-        reportMaker.prepareData("src/test");
-        reportMaker.enableTestMode();
-        reportMaker.generate();
+        reportMaker.prepareData("foo", "src/test")
+                .setTemplate("html")
+                .enableTestMode()
+                .generate();
     }
 
     @Test
     public void testGetBaseDirInRootJsDir() {
-        String baseDir = new ReportMaker().prepareData("/jsdir").getBaseDir();
+        String baseDir = new ReportMaker().prepareData("foo", "/jsdir").getBaseDir();
         assertEquals("/jsdir", baseDir);
     }
 
     @Test
     public void testGetBaseDirInOutputDir() {
-        String baseDir = new ReportMaker().setOutputDir("/outputdir").prepareData("/jsdir").getBaseDir();
+        String baseDir = new ReportMaker().setOutputDir("/outputdir").prepareData("foo", "/jsdir").getBaseDir();
         assertEquals("/outputdir", baseDir);
     }
 

@@ -10,6 +10,16 @@ import java.util.List;
 public interface Report {
 
     /**
+     * Returns the project name report.
+     */
+    String getProjectName();
+
+    /**
+     * Sets the project name report.
+     */
+    void setProjectName(String projectName);
+
+    /**
      * Returns the report date.
      */
     String getDate();

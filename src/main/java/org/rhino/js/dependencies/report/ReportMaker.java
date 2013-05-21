@@ -49,9 +49,10 @@ public class ReportMaker {
      */
     private boolean testMode = false;
 
-    public ReportMaker prepareData(String jsDir) {
+    public ReportMaker prepareData(String projectName, String jsDir) {
         report = new DefaultReport();
         report.setRootJsDir(jsDir);
+        report.setProjectName(projectName);
 
         List<JsPath> paths = JsPaths.getPaths(jsDir);
 
@@ -98,14 +99,15 @@ public class ReportMaker {
         return this;
     }
 
-    public ReportMaker setTemplate(Template template) {
-        Preconditions.checkArgument(template != null);
-        this.template = template;
+    public ReportMaker setTemplate(String type) {
+        Preconditions.checkArgument(type != null);
+        this.template = Template.getReportByType(type);
         return this;
     }
 
-    public void enableTestMode() {
+    public ReportMaker enableTestMode() {
         this.testMode = true;
+        return this;
     }
 
     public File getFile() {

@@ -8,47 +8,35 @@ import static org.junit.Assert.*;
 public class TestConfigurationReader {
 
     private static final String SRC_TEST_RESOURCES = "src/test/resources/";
-    private static final String APP_DEFAULTS = SRC_TEST_RESOURCES + "conf/applicationDefaults.conf";
-    private static final String APP_CUSTOMS = SRC_TEST_RESOURCES + "conf/applicationCustoms.conf";
-    private static final String APP_MISSINGS = SRC_TEST_RESOURCES + "conf/applicationMissings.conf";
-
-    private static ConfigurationReader loadDefaults() {
-        return ConfigurationReader.load(APP_DEFAULTS);
-    }
-
-    private static  ConfigurationReader loadCustoms() {
-        return ConfigurationReader.load(APP_CUSTOMS);
-    }
-
-    private static  ConfigurationReader loadMissings() {
-        return ConfigurationReader.load(APP_MISSINGS);
-    }
+    private static final ConfigurationReader CONF_APP_DEFAULTS = ConfigurationReader.load(SRC_TEST_RESOURCES + "conf/applicationDefaults.conf");
+    private static final ConfigurationReader CONF_APP_CUSTOMS = ConfigurationReader.load(SRC_TEST_RESOURCES + "conf/applicationCustoms.conf");
+    private static final ConfigurationReader CONF_APP_MISSINGS = ConfigurationReader.load(SRC_TEST_RESOURCES + "conf/applicationMissings.conf");
 
     @Test
     public void testGetProjectName() throws Exception {
-        assertEquals("Default", loadDefaults().getProjectName());
-        assertEquals("Custom", loadCustoms().getProjectName());
+        assertEquals("Default", CONF_APP_DEFAULTS.getProjectName());
+        assertEquals("Custom", CONF_APP_CUSTOMS.getProjectName());
     }
 
     @Test
     public void testGetJsDir() throws Exception {
-        assertEquals("/jsdir/", loadDefaults().getJsDir());
+        assertEquals("/jsdir/", CONF_APP_DEFAULTS.getJsDir());
     }
 
     @Test
     public void testGetOutputDir() throws Exception {
-        assertEquals("/jsdir/", loadDefaults().getOutputDir());
-        assertEquals("/outputdir/", loadCustoms().getOutputDir());
+        assertEquals("/jsdir/", CONF_APP_DEFAULTS.getOutputDir());
+        assertEquals("/outputdir/", CONF_APP_CUSTOMS.getOutputDir());
     }
 
     @Test
     public void testGetTemplateType() throws Exception {
-        assertEquals("text", loadDefaults().getTemplateType());
-        assertEquals("html", loadCustoms().getTemplateType());
+        assertEquals("txt", CONF_APP_DEFAULTS.getTemplateType());
+        assertEquals("html", CONF_APP_CUSTOMS.getTemplateType());
     }
 
     @Test(expected = ConfigException.Missing.class)
     public void testGetIllegalPropertyMissing() {
-        loadMissings().getJsDir();
+        CONF_APP_MISSINGS.getJsDir();
     }
 }
