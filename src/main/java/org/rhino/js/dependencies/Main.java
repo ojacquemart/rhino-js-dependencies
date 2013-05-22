@@ -11,11 +11,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * org.rhino.js.dependencies.Main class.
  */
-public class Main {
+public final class Main {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     private static final ConfigurationReader CONFIG_READER = ConfigurationReader.load();
+
+    private Main() {}
 
     public static void main(String[] args) {
         LOGGER.info("Running main....");

@@ -6,7 +6,7 @@ import com.github.mustachejava.MustacheFactory;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import org.joda.time.DateTime;
-import org.rhino.js.dependencies.ast.FilesInfoAndUsagesSetter;
+import org.rhino.js.dependencies.ast.FilesInfoManager;
 import org.rhino.js.dependencies.io.JsPath;
 import org.rhino.js.dependencies.io.JsPaths;
 import org.slf4j.Logger;
@@ -54,10 +54,10 @@ public class ReportMaker {
         report.setRootJsDir(jsDir);
         report.setProjectName(projectName);
 
-        List<JsPath> paths = JsPaths.getPaths(jsDir);
-
-        FilesInfoAndUsagesSetter infoAndUsagesSetter = FilesInfoAndUsagesSetter.with(paths);
-        infoAndUsagesSetter.setInfo().andUsages();
+        List<JsPath> paths = FilesInfoManager.from(jsDir)
+                .setFilesInfo()
+                .resolveUsages()
+                .get();
 
         report.setPaths(paths);
 

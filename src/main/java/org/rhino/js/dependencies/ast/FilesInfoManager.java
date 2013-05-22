@@ -2,34 +2,40 @@ package org.rhino.js.dependencies.ast;
 
 import org.rhino.js.dependencies.io.JsFile;
 import org.rhino.js.dependencies.io.JsPath;
+import org.rhino.js.dependencies.io.JsPaths;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public final class FilesInfoAndUsagesSetter {
+/**
+ * Manager to set files info and resolve usages between javascript files.
+ *
+ * @see FileInfoResolver
+ * @see FilesUsageResolver
+ */
+public final class FilesInfoManager {
 
     private static final FilesUsageResolver FILE_USAGE_RESOLVER = new FilesUsageResolver();
 
     private List<JsPath> paths;
     private List<JsFile> flattenFiles = new ArrayList<>();
 
-    private FilesInfoAndUsagesSetter(List<JsPath> paths) {
+    private FilesInfoManager(List<JsPath> paths) {
         this.paths = paths;
     }
 
-    public static FilesInfoAndUsagesSetter with(List<JsPath> paths) {
-        return new FilesInfoAndUsagesSetter(paths);
+    public static FilesInfoManager from(String jsDir) {
+        return new FilesInfoManager(JsPaths.getPaths(jsDir));
     }
 
-    public FilesInfoAndUsagesSetter setInfo() {
+    public FilesInfoManager setFilesInfo() {
          for (JsPath path : paths) {
              flattenFiles.addAll(setFileInfo(path.getFiles()));
          }
-
         return this;
     }
 
-    public List<JsFile> setFileInfo(List<JsFile> jsFiles) {
+    private List<JsFile> setFileInfo(List<JsFile> jsFiles) {
         for (JsFile eachJsFile : jsFiles) {
             setFileInfo(eachJsFile);
         }
@@ -38,14 +44,19 @@ public final class FilesInfoAndUsagesSetter {
     }
 
 
-    public void setFileInfo(JsFile jsFile) {
+    private void setFileInfo(JsFile jsFile) {
         jsFile.setFileInfo(FileInfoResolver
                 .forFile(jsFile.getFile())
                 .get());
     }
 
-    public void andUsages() {
+    public FilesInfoManager resolveUsages() {
         FILE_USAGE_RESOLVER.resolve(flattenFiles);
+        return this;
+    }
+
+    public List<JsPath> get() {
+        return paths;
     }
 
 }
