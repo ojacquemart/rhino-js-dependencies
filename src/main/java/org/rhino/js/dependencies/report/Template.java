@@ -3,6 +3,7 @@ package org.rhino.js.dependencies.report;
 public enum Template {
 
     TEXT("report.text.mustache", "txt"),
+    JSON("report.json.mustache", "json"),
     HTML("report.html.angular.mustache", "html")
     ;
     private static final String ROOT = "src/main/resources/templates/";

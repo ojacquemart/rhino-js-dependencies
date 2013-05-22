@@ -1,8 +1,13 @@
 package org.rhino.js.dependencies.report;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.joda.time.DateTime;
 import org.rhino.js.dependencies.io.JsPath;
 import org.rhino.js.dependencies.io.JsPaths;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -10,6 +15,8 @@ import java.util.List;
  * Default report implementation.
  */
 public class DefaultReport implements Report {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultReport.class);
 
     public static final String DATE_PATTERN_YYMMDD_HHMM = "YMMdd";
 
@@ -19,6 +26,7 @@ public class DefaultReport implements Report {
 
     private List<JsPath> paths;
 
+    @JsonProperty("name")
     @Override
     public String getProjectName() {
         return projectName;
@@ -34,6 +42,7 @@ public class DefaultReport implements Report {
         return DateTime.now().toString(DATE_PATTERN_YYMMDD_HHMM);
     }
 
+    @JsonProperty("jsDir")
     @Override
     public String getRootJsDir() {
         return rootJsDir;
@@ -69,4 +78,14 @@ public class DefaultReport implements Report {
         return JsPaths.getNumberOfMinifiedFiles(paths);
     }
 
+    @Override
+    public String toJson() {
+        try {
+            return new ObjectMapper().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Error during json processing", e);
+
+            return "";
+        }
+    }
 }

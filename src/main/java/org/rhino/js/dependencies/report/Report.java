@@ -59,4 +59,10 @@ public interface Report {
      */
     int getNumberOfMinifiedFiles();
 
+
+    /**
+     * Returns the json object.
+     */
+    String toJson();
+
 }
