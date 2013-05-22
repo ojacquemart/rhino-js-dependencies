@@ -32,7 +32,7 @@ public class TestJsPaths {
         }
 
         // First path must be first the resources root dir.
-        assertTrue(paths.get(0).getDir().endsWith("resources"));
+        assertTrue(paths.get(0).getName().endsWith("resources"));
     }
 
     @Test

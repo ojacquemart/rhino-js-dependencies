@@ -17,10 +17,6 @@ public class JsPath implements JsFileAttribute, Comparable<JsPath> {
         this.files = files;
     }
 
-    public String getDir() {
-        return dir;
-    }
-
     @Override
     public String getName() {
         return dir;

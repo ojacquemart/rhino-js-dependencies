@@ -41,7 +41,7 @@ public class TestJsPath {
         Collections.sort(paths);
 
         // Bar must be in first position after sort.
-        assertEquals("bar", paths.get(0).getDir());
+        assertEquals("bar", paths.get(0).getName());
     }
 
 }
