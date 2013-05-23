@@ -1,21 +1,18 @@
 package org.rhino.js.dependencies.report;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
+import freemarker.template.Configuration;
 import org.joda.time.DateTime;
 import org.rhino.js.dependencies.ast.FilesInfoManager;
 import org.rhino.js.dependencies.io.JsPath;
-import org.rhino.js.dependencies.io.JsPaths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -48,6 +45,7 @@ public class ReportMaker {
      * When test mode is on , the template is flushed in Console.
      */
     private boolean testMode = false;
+    private Writer writer;
 
     public ReportMaker prepareData(String projectName, String jsDir) {
         report = new DefaultReport();
@@ -69,45 +67,57 @@ public class ReportMaker {
      * TODO: try to precompile the templates.
      */
     public void generate() {
-        try {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.start();
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.start();
 
-            LOGGER.info("Generating report");
-            LOGGER.info("\ttemplate used: {}", template.getName());
+        LOGGER.info("Generating report");
+        LOGGER.info("\ttemplate used: {}", template.getName());
 
-            MustacheFactory mf = new DefaultMustacheFactory();
-            Mustache mustache = mf.compile(template.getName());
-            if (testMode) {
-                mustache.execute(new PrintWriter(System.out), report).flush();
-            } else {
-                File outputFile = getFile();
-                LOGGER.info("\toutput directory: {}", outputFile.getAbsolutePath());
+        processTemplate();
 
-                mustache.execute(new PrintWriter(outputFile), report).flush();
-            }
+        stopwatch.stop();
+        LOGGER.info("Report generated in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+    }
 
-            stopwatch.stop();
-            LOGGER.info("Report generated in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
-        } catch (IOException e) {
-            throw new IllegalStateException("Error during generating report", e);
+    private void processTemplate() {
+        try (Writer writer = getWriter()) {
+            LOGGER.info("Processing template...");
+
+            Stopwatch timer = new Stopwatch();
+            timer.start();
+
+            Configuration ftlConfig = new Configuration();
+            freemarker.template.Template ftlTemplate = ftlConfig.getTemplate(template.getName());
+            ftlTemplate.process(getModel(), writer);
+
+            timer.stop();
+            LOGGER.debug("Processing template duration {} ms", timer.elapsed(TimeUnit.MILLISECONDS));
+
+            writer.flush();
+        } catch (Exception e) {
+            throw new IllegalStateException("Error during processing and writing template", e);
         }
     }
 
-    public ReportMaker setOutputDir(String outputDir) {
-        this.outputDir = outputDir;
-        return this;
+    public Writer getWriter() {
+        if (testMode) {
+            return new OutputStreamWriter(System.out);
+        }
+
+        try {
+            return new FileWriter(getFile());
+        } catch (IOException e) {
+            throw new IllegalStateException("Error during template report FileWriter instanciation " + e);
+        }
     }
 
-    public ReportMaker setTemplate(String type) {
-        Preconditions.checkArgument(type != null);
-        this.template = Template.getReportByType(type);
-        return this;
-    }
+    public Map<String, Object> getModel() {
+        LOGGER.debug("Building model");
 
-    public ReportMaker enableTestMode() {
-        this.testMode = true;
-        return this;
+        Map<String, Object> model = new HashMap<>();
+        model.put("report", report);
+
+        return model;
     }
 
     public File getFile() {
@@ -126,6 +136,22 @@ public class ReportMaker {
         return String.format("%s_%s",
                 DateTime.now().toString(DATE_PATTERN_YYMMDD_HHMM),
                 template.getReportName());
+    }
+
+    public ReportMaker setOutputDir(String outputDir) {
+        this.outputDir = outputDir;
+        return this;
+    }
+
+    public ReportMaker setTemplate(String type) {
+        Preconditions.checkArgument(type != null);
+        this.template = Template.getReportByType(type);
+        return this;
+    }
+
+    public ReportMaker enableTestMode() {
+        this.testMode = true;
+        return this;
     }
 
 }

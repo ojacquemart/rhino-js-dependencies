@@ -16,6 +16,7 @@
         <guava.version>14.0.1</guava.version>
         <jackson.version>2.2.0</jackson.version>
         <joda-time.version>2.2</joda-time.version>
+        <freemaker.version>2.3.19</freemaker.version>
         <mustache.java.version>0.8.12</mustache.java.version>
         <sl4j.version>1.7.5</sl4j.version>
         <junit.version>4.8.1</junit.version>
@@ -48,11 +49,6 @@
             <version>${joda-time.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.github.spullara.mustache.java</groupId>
-            <artifactId>compiler</artifactId>
-            <version>${mustache.java.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -70,6 +66,12 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemaker.version}</version>
         </dependency>
 
         <dependency>

@@ -26,7 +26,6 @@ public class DefaultReport implements Report {
 
     private List<JsPath> paths;
 
-    @JsonProperty("name")
     @Override
     public String getProjectName() {
         return projectName;
@@ -42,7 +41,6 @@ public class DefaultReport implements Report {
         return DateTime.now().toString(DATE_PATTERN_YYMMDD_HHMM);
     }
 
-    @JsonProperty("jsDir")
     @Override
     public String getRootJsDir() {
         return rootJsDir;
@@ -81,6 +79,8 @@ public class DefaultReport implements Report {
     @Override
     public String toJson() {
         try {
+            LOGGER.debug("Generate json jackson object");
+
             return new ObjectMapper().writeValueAsString(this);
         } catch (JsonProcessingException e) {
             LOGGER.error("Error during json processing", e);

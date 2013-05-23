@@ -22,6 +22,17 @@ public class TestReportMaker {
     }
 
     @Test
+    public void testGenerateAllTemplates() {
+        for (Template template : Template.values()) {
+            ReportMaker reportMaker = new ReportMaker();
+            reportMaker.prepareData("foo", "src/test")
+                    .setTemplate(template.getType())
+                    .enableTestMode()
+                    .generate();
+        }
+    }
+
+    @Test
     public void testGetBaseDirInRootJsDir() {
         String baseDir = new ReportMaker().prepareData("foo", "/jsdir").getBaseDir();
         assertEquals("/jsdir", baseDir);
