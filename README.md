@@ -3,16 +3,19 @@ Dr Rhino
 
 [![Build Status](https://travis-ci.org/ojacquemart/rhino-js-dependencies.png?branch=master)](https://travis-ci.org/ojacquemart/rhino-js-dependencies)
 
-Dr Rhino (Dependencies Resolver with Rhino) is a javascript dependencies resolver for a project which is not using AMD to manage script files.
+A Javascript Dependencies Resolver.
 
-It's based on Mozilla Rhino AST parser.
-
-It needs JDK 7+.
-
-Usage
+About
 -----
+Dr Rhino (Dependencies Resolver with Rhino) tries to resolve dependencies, for a project which is not using AMD to manage script files.
+
+It's based on the Mozilla Rhino AST parser.
+
+Installation
+-----
+* Requires JDK 7+
 * mvn clean install
-* mvn exec:java
+
 
 Configuration
 ------
@@ -29,7 +32,11 @@ Edit the conf/application.conf:
     
     # The template type: txt | html
     template.type="html"
-
+    
+Usage
+----
+* mvn exec:java
+* Open report
 
 
 TODO
