@@ -15,53 +15,60 @@
     <link href="http://bootswatch.com/default/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="http://bootswatch.com/css/font-awesome.min.css" rel="stylesheet">
     <link href="http://bootswatch.com/css/bootswatch.css" rel="stylesheet">
-    <style type="text/css"></style><style type="text/css">
-    .file-outline {
-        min-height: 250px;
-        max-height: 250px;
-        overflow: auto
-    }
-    section {
-        margin-top: 0;
-        padding-top: 0;
-    }
+    <style type="text/css"></style>
+    <style type="text/css">
+        a {
+            cursor: pointer;
+        }
 
-        /**
-         *  Column center
-         */
-    .well {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 4px;
-    }
+        .file-outline {
+            min-height: 250px;
+            max-height: 250px;
+            overflow: auto
+        }
 
-    .paths-files-header-column {
-        font-size: 13px;
-        text-align: center;
-        background: #DDD;
-        border-top-right-radius: 8px;
-        border-top-left-radius: 8px;
-    }
+        section {
+            margin-top: 0;
+            padding-top: 0;
+        }
 
+            /**
+             *  Column center
+             */
+        .well {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
 
-        /**
-         * Search bar query.
-         */
-    .navbar-search .search-query {
-        padding-left: 29px;
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJ5JREFUeNpi+P//PwMQMANxERCfAeI/UBrEZwbJQ9WAFR0A4u1AbAnEbFB6O1ScGaawGoi3wHQiYyBYDZKHKbwHxLo4FOqC5GEKf4Ksw6EQ5IyfIDYTkPEUiNUZsAOQ+F9GRkYJEKcFiDficSOIcRjE4QTiY0C8DuRbqAJLKP8/FP9kQArHUiA+jySJjA8w4LAS5KZd0MAHhaccQIABALsMiBZy4YLtAAAAAElFTkSuQmCC);
-        background-repeat: no-repeat;
-        background-position: 12px 8px;
-    }
-    .navbar-search .search-query:focus, .navbar-search .search-query.focused {
-        /*padding-left: 50px;*/
-        background-position: 13px 9px;
-    }
+        .paths-files-header-column {
+            font-size: 13px;
+            text-align: center;
+            background: #DDD;
+            border-top-right-radius: 8px;
+            border-top-left-radius: 8px;
+        }
 
-</style>
+            /**
+             * Search bar query.
+             */
+        .navbar-search .search-query {
+            padding-left: 29px;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJ5JREFUeNpi+P//PwMQMANxERCfAeI/UBrEZwbJQ9WAFR0A4u1AbAnEbFB6O1ScGaawGoi3wHQiYyBYDZKHKbwHxLo4FOqC5GEKf4Ksw6EQ5IyfIDYTkPEUiNUZsAOQ+F9GRkYJEKcFiDficSOIcRjE4QTiY0C8DuRbqAJLKP8/FP9kQArHUiA+jySJjA8w4LAS5KZd0MAHhaccQIABALsMiBZy4YLtAAAAAElFTkSuQmCC);
+            background-repeat: no-repeat;
+            background-position: 12px 8px;
+        }
+
+        .navbar-search .search-query:focus, .navbar-search .search-query.focused {
+            /*padding-left: 50px;*/
+            background-position: 13px 9px;
+        }
+
+    </style>
 </head>
-<body ng-controller="DrRhinoController" class="preview" id="top" data-spy="scroll" data-target=".subnav" data-offset="80">
+<body ng-controller="DrRhinoController" class="preview" id="top" data-spy="scroll" data-target=".subnav"
+      data-offset="80">
 <!-- Navbar
   ================================================== -->
 <div class="navbar navbar-fixed-top">
@@ -75,6 +82,7 @@
                      src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"
                      alt="Fork me on GitHub">
             </a>
+
             <form class="navbar-search">
                 <input class="search-query span2" placeholder="Search" ng-model="search.$" type="text">
             </form>
@@ -90,6 +98,7 @@
         <div class="row">
             <div class="span6">
                 <h1>{{report.projectName}}</h1>
+
                 <p class="lead">Dependencies report.</p>
             </div>
 
@@ -99,7 +108,8 @@
                         <li class="clearfix"><span class="span2">Root directory:</span>{{report.rootJsDir}}</li>
                         <li class="clearfix"><span class="span2">Date:</span>{{report.date}}</li>
                         <li class="clearfix"><span class="span2">Files:</span>{{report.numberOfFiles}}</li>
-                        <li class="clearfix"><span class="span2">Minified files:</span>{{report.numberOfMinifiedFiles}}</li>
+                        <li class="clearfix"><span class="span2">Minified files:</span>{{report.numberOfMinifiedFiles}}
+                        </li>
                         <li class="clearfix"><span class="span2">Lines of code (LOC):</span>{{report.numberOfLoc}}</li>
                     </ul>
                     <div style="clear:both"></div>
@@ -122,8 +132,8 @@
             <ul class="breadcrumb">
                 <li>{{path.name}} ({{path.numberOfFiles}} files | {{path.numberOfLoc}} loc)</li>
             </ul>
-            <div class="paths-files" ng-repeat="file in path.files | filter:search">
-                <div class="page-header" >
+            <div id="{{file.name}}" class="paths-files" ng-repeat="file in path.files | filter:search">
+                <div class="page-header">
                     <h4>{{file.name}}</h4>
                 </div>
 
@@ -155,7 +165,9 @@
                         </div>
                         <div class="well">
                             <ul class="file-outline">
-                                <li ng-repeat="usage in file.usages| filter:search">{{usage.name}}</li>
+                                <li ng-repeat="usage in file.usages| filter:search">
+                                    <a ng-click="scrollTo(usage.name)">{{usage.name}}</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -178,7 +190,8 @@
         By <a href="https://twitter.com/ojacquemart">Olivier Jacquemart</a>.
     </footer>
 
-</div><!-- /container -->
+</div>
+<!-- /container -->
 
 <!-- javascript
 ================================================== -->
@@ -192,6 +205,13 @@
 
         // Dependencies report.
         $scope.report = ${report.toJson()};
+
+        $scope.scrollTo = function (id) {
+            var element = $(document.getElementById(id));
+            $('html, body').animate({
+                scrollTop: element.offset().top - 100
+            }, 1000);
+        }
 
         // onLoad...
         initBotswatch();
