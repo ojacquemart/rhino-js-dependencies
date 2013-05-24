@@ -15,22 +15,32 @@
     <link href="http://bootswatch.com/default/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="http://bootswatch.com/css/font-awesome.min.css" rel="stylesheet">
     <link href="http://bootswatch.com/css/bootswatch.css" rel="stylesheet">
-    <style type="text/css"></style>
-    <style type="text/css">
-        .file-outline {
-            min-height: 250px;
-            max-height: 250px;
-            overflow: auto
-        }
+    <style type="text/css"></style><style type="text/css">
+    .file-outline {
+        min-height: 250px;
+        max-height: 250px;
+        overflow: auto
+    }
+    section {
+        margin-top: 0;
+        padding-top: 0;
+    }
 
-        section {
-            margin-top: 0;
-            padding-top: 0;
-        }
-    </style>
+    .navbar-search .search-query {
+        padding-left: 29px;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJ5JREFUeNpi+P//PwMQMANxERCfAeI/UBrEZwbJQ9WAFR0A4u1AbAnEbFB6O1ScGaawGoi3wHQiYyBYDZKHKbwHxLo4FOqC5GEKf4Ksw6EQ5IyfIDYTkPEUiNUZsAOQ+F9GRkYJEKcFiDficSOIcRjE4QTiY0C8DuRbqAJLKP8/FP9kQArHUiA+jySJjA8w4LAS5KZd0MAHhaccQIABALsMiBZy4YLtAAAAAElFTkSuQmCC);
+        background-repeat: no-repeat;
+        background-position: 12px 8px;
+    }
+
+    .navbar-search .search-query:focus, .navbar-search .search-query.focused {
+        /*padding-left: 50px;*/
+        background-position: 13px 9px;
+    }
+
+</style>
 </head>
-<body ng-controller="DrRhinoController" class="preview" id="top" data-spy="scroll" data-target=".subnav"
-      data-offset="80">
+<body ng-controller="DrRhinoController" class="preview" id="top" data-spy="scroll" data-target=".subnav" data-offset="80">
 <!-- Navbar
   ================================================== -->
 <div class="navbar navbar-fixed-top">
@@ -44,6 +54,9 @@
                      src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"
                      alt="Fork me on GitHub">
             </a>
+            <form class="navbar-search">
+                <input class="search-query span2" placeholder="Search" ng-model="search.$" type="text">
+            </form>
         </div>
     </div>
 </div>
@@ -56,17 +69,16 @@
         <div class="row">
             <div class="span6">
                 <h1>{{report.projectName}}</h1>
-
                 <p class="lead">Dependencies report.</p>
             </div>
+
             <div class="span6">
                 <div class="well" style="padding: 25px 25px 15px 25px;">
                     <ul class="nav">
                         <li class="clearfix"><span class="span2">Root directory:</span>{{report.rootJsDir}}</li>
                         <li class="clearfix"><span class="span2">Date:</span>{{report.date}}</li>
                         <li class="clearfix"><span class="span2">Files:</span>{{report.numberOfFiles}}</li>
-                        <li class="clearfix"><span class="span2">Minified files:</span>{{report.numberOfMinifiedFiles}}
-                        </li>
+                        <li class="clearfix"><span class="span2">Minified files:</span>{{report.numberOfMinifiedFiles}}</li>
                         <li class="clearfix"><span class="span2">Lines of code (LOC):</span>{{report.numberOfLoc}}</li>
                     </ul>
                     <div style="clear:both"></div>
@@ -84,41 +96,42 @@
     <!-- Typography
     ================================================== -->
     <section id="files">
-        <div class="report-paths" ng-repeat="path in report.paths">
+        <div class="test" ng-repeat="path in report.paths">
+
             <ul class="breadcrumb">
                 <li>{{path.name}} ({{path.numberOfFiles}} files | {{path.numberOfLoc}} loc)</li>
             </ul>
-
-            <div class="report-paths-files" ng-repeat="file in path.files">
-                <div class="page-header">
+            <div class="test2" ng-repeat="file in path.files | filter:search">
+                <div class="page-header" >
                     <h4>{{file.name}}</h4>
                 </div>
 
+                <!-- Headings & Paragraph Copy -->
                 <div class="row">
                     <div class="span4">
                         <div class="well">
                             <ul class="file-outline">
-                                <li ng-repeat="function in file.functions">{{function.name}}</li>
+                                <li ng-repeat="function in file.functions| filter:search">{{function.name}}</li>
                             </ul>
                         </div>
                     </div>
                     <div class="span4">
                         <div class="well">
                             <ul class="file-outline">
-                                <li ng-repeat="usage in file.usages">{{usage.name}}</li>
+                                <li ng-repeat="usage in file.usages| filter:search">{{usage.name}}</li>
                             </ul>
                         </div>
                     </div>
                     <div class="span4">
                         <div class="well">
                             <ul class="file-outline">
-                                <li ng-repeat="function in file.functionCalls">{{function.name}}</li>
+                                <li ng-repeat="function in file.functionCalls| filter:search">{{function.name}}</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div> <!-- /Files -->
-        </div> <!-- /Paths -->
+            </div>
+        </div>
     </section>
 
     <section id="graphic">
@@ -135,8 +148,7 @@
         By <a href="https://twitter.com/ojacquemart">Olivier Jacquemart</a>.
     </footer>
 
-</div>
-<!-- /container -->
+</div><!-- /container -->
 
 <!-- javascript
 ================================================== -->
