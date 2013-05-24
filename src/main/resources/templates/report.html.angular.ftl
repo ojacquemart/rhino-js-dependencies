@@ -26,13 +26,34 @@
         padding-top: 0;
     }
 
+        /**
+         *  Column center
+         */
+    .well {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
+
+    .paths-files-header-column {
+        font-size: 13px;
+        text-align: center;
+        background: #DDD;
+        border-top-right-radius: 8px;
+        border-top-left-radius: 8px;
+    }
+
+
+        /**
+         * Search bar query.
+         */
     .navbar-search .search-query {
         padding-left: 29px;
         background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJ5JREFUeNpi+P//PwMQMANxERCfAeI/UBrEZwbJQ9WAFR0A4u1AbAnEbFB6O1ScGaawGoi3wHQiYyBYDZKHKbwHxLo4FOqC5GEKf4Ksw6EQ5IyfIDYTkPEUiNUZsAOQ+F9GRkYJEKcFiDficSOIcRjE4QTiY0C8DuRbqAJLKP8/FP9kQArHUiA+jySJjA8w4LAS5KZd0MAHhaccQIABALsMiBZy4YLtAAAAAElFTkSuQmCC);
         background-repeat: no-repeat;
         background-position: 12px 8px;
     }
-
     .navbar-search .search-query:focus, .navbar-search .search-query.focused {
         /*padding-left: 50px;*/
         background-position: 13px 9px;
@@ -96,12 +117,12 @@
     <!-- Typography
     ================================================== -->
     <section id="files">
-        <div class="test" ng-repeat="path in report.paths">
+        <div class="paths" ng-repeat="path in report.paths">
 
             <ul class="breadcrumb">
                 <li>{{path.name}} ({{path.numberOfFiles}} files | {{path.numberOfLoc}} loc)</li>
             </ul>
-            <div class="test2" ng-repeat="file in path.files | filter:search">
+            <div class="paths-files" ng-repeat="file in path.files | filter:search">
                 <div class="page-header" >
                     <h4>{{file.name}}</h4>
                 </div>
@@ -109,6 +130,9 @@
                 <!-- Headings & Paragraph Copy -->
                 <div class="row">
                     <div class="span4">
+                        <div class="paths-files-header-column">
+                            <span>Functions</span>
+                        </div>
                         <div class="well">
                             <ul class="file-outline">
                                 <li ng-repeat="function in file.functions| filter:search">{{function.name}}</li>
@@ -116,16 +140,22 @@
                         </div>
                     </div>
                     <div class="span4">
+                        <div class="paths-files-header-column">
+                            <span>Functions called</span>
+                        </div>
                         <div class="well">
                             <ul class="file-outline">
-                                <li ng-repeat="usage in file.usages| filter:search">{{usage.name}}</li>
+                                <li ng-repeat="function in file.functionCalls| filter:search">{{function.name}}</li>
                             </ul>
                         </div>
                     </div>
                     <div class="span4">
+                        <div class="paths-files-header-column">
+                            <span>Files references</span>
+                        </div>
                         <div class="well">
                             <ul class="file-outline">
-                                <li ng-repeat="function in file.functionCalls| filter:search">{{function.name}}</li>
+                                <li ng-repeat="usage in file.usages| filter:search">{{usage.name}}</li>
                             </ul>
                         </div>
                     </div>
