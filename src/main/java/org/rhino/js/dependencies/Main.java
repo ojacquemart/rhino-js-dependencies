@@ -25,9 +25,9 @@ public final class Main {
         Stopwatch timer = new Stopwatch();
         timer.start();
 
-        ReportMaker reportMaker = new ReportMaker();
+        ReportMaker reportMaker = new ReportMaker(CONFIG_READER.getProjectName());
         reportMaker.setOutputDir(CONFIG_READER.getOutputDir())
-                .prepareData(CONFIG_READER.getProjectName(), CONFIG_READER.getJsDir())
+                .prepareData(CONFIG_READER.getJsDir())
                 .setTemplate(CONFIG_READER.getTemplateType())
                 .generate();
 

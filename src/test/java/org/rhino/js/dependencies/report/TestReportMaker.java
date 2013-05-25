@@ -1,21 +1,28 @@
 package org.rhino.js.dependencies.report;
 
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class TestReportMaker {
 
+    private ReportMaker reportMaker;
+
+    @Before
+    public void setUp() {
+        this.reportMaker = new ReportMaker("foo");
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testSetTemplateNull() {
-        new ReportMaker().setTemplate(null);
+        reportMaker.setTemplate(null);
     }
 
     @Test
     public void testGenerate() {
-        ReportMaker reportMaker = new ReportMaker();
-        reportMaker.prepareData("foo", "src/test")
+        reportMaker.prepareData("src/test")
                 .setTemplate("html")
                 .enableTestMode()
                 .generate();
@@ -24,8 +31,8 @@ public class TestReportMaker {
     @Test
     public void testGenerateAllTemplates() {
         for (Template template : Template.values()) {
-            ReportMaker reportMaker = new ReportMaker();
-            reportMaker.prepareData("foo", "src/test")
+            ReportMaker reportMaker = new ReportMaker("foo");
+            reportMaker.prepareData("src/test")
                     .setTemplate(template.getType())
                     .enableTestMode()
                     .generate();
@@ -34,23 +41,28 @@ public class TestReportMaker {
 
     @Test
     public void testGetBaseDirInRootJsDir() {
-        String baseDir = new ReportMaker().prepareData("foo", "/jsdir").getBaseDir();
+        String baseDir = reportMaker.prepareData("/jsdir").getBaseDir();
         assertEquals("/jsdir", baseDir);
     }
 
     @Test
     public void testGetBaseDirInOutputDir() {
-        String baseDir = new ReportMaker().setOutputDir("/outputdir").prepareData("foo", "/jsdir").getBaseDir();
+        String baseDir = reportMaker.setOutputDir("/outputdir").prepareData("/jsdir").getBaseDir();
         assertEquals("/outputdir", baseDir);
     }
 
     @Test
     public void testGetName() {
-        // Report file name should be yyyymmdd_templatename.extension
-        ReportMaker report = new ReportMaker();
-        assertEquals(DateTime.now().toString(ReportMaker.DATE_PATTERN_YYMMDD_HHMM)
-                        + "_"
-                        + Template.TEXT.getReportName(), report.getName());
+        reportMaker.prepareData("src/test");
+        assertEquals(
+                ReportMaker.DR_RHINO
+                        + "-"
+                        + "foo"
+                        + "-"
+                        + DateTime.now().toString(ReportMaker.DATE_PATTERN_YYMMDD)
+                        + "."
+                        + Template.HTML.getType(),
+                reportMaker.getName());
     }
 
 }

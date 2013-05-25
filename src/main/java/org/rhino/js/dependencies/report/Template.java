@@ -4,7 +4,7 @@ public enum Template {
 
     TEXT("report.text.ftl", "txt"),
     JSON("report.json.ftl", "json"),
-    HTML("report.html.angular.ftl", "html")
+    HTML("report.html.angular.ftl", "html"),
     ;
 
     private static final String ROOT = "src/main/resources/templates/";

@@ -1,6 +1,5 @@
 package org.rhino.js.dependencies.report;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.joda.time.DateTime;

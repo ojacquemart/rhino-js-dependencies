@@ -22,9 +22,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class ReportMaker {
 
-    public static final String DATE_PATTERN_YYMMDD_HHMM = "YMMdd_HHmm";
+    public static final String DR_RHINO = "drrhino";
+    public static final String DATE_PATTERN_YYMMDD = "YMMdd";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportMaker.class);
+    private static final String REPORT_FORMAT = "%s-%s-%s.%s";
 
     /**
      * Output directory to store the report.
@@ -32,9 +34,9 @@ public class ReportMaker {
     private String outputDir;
 
     /**
-     * Default template is Template#TEXT.
+     * Default template is Template#HTML.
      */
-    private Template template = Template.TEXT;
+    private Template template = Template.HTML;
 
     /**
      * The report used in template.
@@ -45,12 +47,15 @@ public class ReportMaker {
      * When test mode is on , the template is flushed in Console.
      */
     private boolean testMode = false;
-    private Writer writer;
 
-    public ReportMaker prepareData(String projectName, String jsDir) {
-        report = new DefaultReport();
+    public ReportMaker(String projectName) {
+        this.report = new DefaultReport();
+        this.report.setProjectName(projectName);
+    }
+
+    // TODO: add projectName setter
+    public ReportMaker prepareData(String jsDir) {
         report.setRootJsDir(jsDir);
-        report.setProjectName(projectName);
 
         List<JsPath> paths = FilesInfoManager.from(jsDir)
                 .setFilesInfo()
@@ -133,9 +138,11 @@ public class ReportMaker {
     }
 
     public String getName() {
-        return String.format("%s_%s",
-                DateTime.now().toString(DATE_PATTERN_YYMMDD_HHMM),
-                template.getReportName());
+        return String.format(REPORT_FORMAT,
+                DR_RHINO,
+                report.getProjectName(),
+                DateTime.now().toString(DATE_PATTERN_YYMMDD),
+                template.getType());
     }
 
     public ReportMaker setOutputDir(String outputDir) {
